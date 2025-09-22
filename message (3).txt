@@ -33,16 +33,6 @@ getgenv().Configs = {
     };
     Gun = {
         "Soul Guitar";
-        "Kabucha";
-        "Venom Bow";
-        "Musket";
-        "Flintlock";
-        "Refined Slingshot"; 
-        "Magma Blaster";
-        "Dual Flintlock";
-        "Cannon";
-        "Bizarre Revolver";
-        "Bazooka";
     };
     ["FPS Booster"] = false;
 };
