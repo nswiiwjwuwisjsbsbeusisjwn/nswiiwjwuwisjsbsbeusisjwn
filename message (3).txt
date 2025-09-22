@@ -33,6 +33,16 @@ getgenv().Configs = {
     };
     Gun = {
         "Soul Guitar";
+        "Kabucha";
+        "Venom Bow";
+        "Musket";
+        "Flintlock";
+        "Refined Slingshot"; 
+        "Magma Blaster";
+        "Dual Flintlock";
+        "Cannon";
+        "Bizarre Revolver";
+        "Bazooka";
     };
     ["FPS Booster"] = false;
 };
@@ -2125,19 +2135,15 @@ end
 
 local function tp(RealTarget, d, D)
     local speed = 300
-    if d == 1.6 then speed = 350 end
+    if d == 1.6 then speed = 320 end
     local Dis = D or 130
     local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
     local humanoid = lp.Character and lp.Character:FindFirstChild("Humanoid")
     if not hrp or not humanoid then return end
     local Distance = (RealTarget.Position - hrp.Position).Magnitude
     if Distance > 3000 and humanoid.Health > 0 then
-        local portals = {
-            {Vector3.new(61163.85, 11.67, 1819.78), "Old_World"},
-            {Vector3.new(-4607.82, 872.54, -1667.55), "Old_World"},
-            {Vector3.new(-7894.61, 5547.14, -380.29), "Old_World"},
+        local portals = {           
             {Vector3.new(923.21, 126.97, 32852.83), "New_World"},
-            {Vector3.new(-2953.31, 41.01, 2099.17), "Old_World"},
         }
         for _, v in pairs(portals) do
             if _G[v[2]] and (v[1] - RealTarget.Position).Magnitude <= 2300 then
