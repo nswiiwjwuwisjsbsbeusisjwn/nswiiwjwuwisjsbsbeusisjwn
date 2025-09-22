@@ -2166,7 +2166,7 @@ local function tp(RealTarget, d, D)
         end)
         return
     elseif distance < Dis then
-        speed = 350
+        speed = 320
     end
     for _, child in pairs(lp.Character:GetDescendants()) do
         if child:IsA("BasePart") and child.CanCollide then
