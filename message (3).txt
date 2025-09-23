@@ -7,7 +7,7 @@ getgenv().Configs = {
     ["Quest"] = {
         ["Evo Race V1"] = true;
         ["Evo Race V2"] = true;
-        ["RGB Haki"] = true;
+        ["RGB Haki"] = false;
         ["Pull Lerver"] = true;
     };
     Sword = {
@@ -209,7 +209,6 @@ task.spawn(function()
         shared.BC_2 = true
     end
 end)
-
 local cg = game:GetService("CoreGui")
 local player = game:GetService("Players").LocalPlayer
 local TweenService = game:GetService("TweenService")
@@ -497,7 +496,7 @@ raceText.ZIndex = 1002
 local devilFruitText = Instance.new("TextLabel")
 devilFruitText.Parent = InfoPanel
 devilFruitText.Position = UDim2.new(0, 15, 0, 110)
-devilFruitText.Size = UDim2.new(1, -30, 0, 25)
+devilFruitText.Size = UDim2.new(1, -30, 0, 23)
 devilFruitText.BackgroundTransparency = 1
 devilFruitText.Text = "Devil Fruit: <font color='rgb(255,0,127)'>" .. (player.Data and player.Data.DevilFruit and player.Data.DevilFruit.Value or "None") .. "</font>"
 devilFruitText.RichText = true
@@ -624,6 +623,7 @@ spawn(function()
         updatePlayerStats()
     end
 end)
+
 if pi == 2753915549 then
     Old_World = true
 elseif pi == 4442272183 then
