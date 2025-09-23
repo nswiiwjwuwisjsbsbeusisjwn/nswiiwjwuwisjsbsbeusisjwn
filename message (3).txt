@@ -210,19 +210,29 @@ task.spawn(function()
     end
 end)
 
-local ScreenGui = Instance.new("ScreenGui");
-local DropShadowHolder = Instance.new("Frame");
-local DropShadow = Instance.new("ImageLabel");
-local turtle = Instance.new("ImageLabel");
-local Main = Instance.new("Frame");
-local UICorner = Instance.new("UICorner");
-local UIStroke = Instance.new("UIStroke");
-local UIGradient = Instance.new("UIGradient");
-local T = Instance.new("TextLabel");
-local UIGradient1 = Instance.new("UIGradient");
+local cg = game:GetService("CoreGui")
+local player = game:GetService("Players").LocalPlayer
+local TweenService = game:GetService("TweenService")
 
+if cg:FindFirstChild('AURURA VN HUB') then
+    cg:FindFirstChild('AURURA VN HUB'):Destroy()
+end
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "AURURA VN HUB"
+ScreenGui.Parent = cg
+ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ScreenGui.Parent = game:GetService("Players").LocalPlayer.PlayerGui
+
+local DropShadowHolder = Instance.new("Frame")
+local DropShadow = Instance.new("ImageLabel")
+local turtle = Instance.new("ImageLabel")
+local Main = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local UIStroke = Instance.new("UIStroke")
+local UIGradient = Instance.new("UIGradient")
+local HeaderText = Instance.new("TextLabel")
+local UIGradient1 = Instance.new("UIGradient")
 
 DropShadowHolder.AnchorPoint = Vector2.new(0.5, 0.5)
 DropShadowHolder.BackgroundTransparency = 1
@@ -275,47 +285,345 @@ UIStroke.Thickness = 2.5
 UIStroke.Parent = Main
 
 UIGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(131,181,255)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(224,162,255))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
 }
 UIGradient.Parent = UIStroke
 
-T.Font = Enum.Font.GothamBold
-T.Text = "Crystal Hub Blox Fruits"
-T.TextColor3 = Color3.fromRGB(255, 255, 255)
-T.TextSize = 16.5
-T.TextYAlignment = Enum.TextYAlignment.Bottom
-T.AnchorPoint = Vector2.new(0.5, 0)
-T.BackgroundTransparency = 1
-T.Position = UDim2.new(0.5, 0, 0, 15)
-T.Size = UDim2.new(0, 500, 0, 18)
-T.ZIndex = 1002
-T.Parent = Main
+HeaderText.Font = Enum.Font.GothamBold
+HeaderText.Text = "AURURA VN HUB"
+HeaderText.TextColor3 = Color3.fromRGB(255, 255, 255)
+HeaderText.TextSize = 16.5
+HeaderText.TextYAlignment = Enum.TextYAlignment.Bottom
+HeaderText.AnchorPoint = Vector2.new(0.5, 0)
+HeaderText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+HeaderText.BackgroundTransparency = 0.9990000128746033
+HeaderText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+HeaderText.BorderSizePixel = 0
+HeaderText.Position = UDim2.new(0.5, 0, 0, 15)
+HeaderText.Size = UDim2.new(0, 500, 0, 18)
+HeaderText.ZIndex = 1002
+HeaderText.Name = "HeaderText"
+HeaderText.Parent = Main
 
 UIGradient1.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(131,181,255)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(224,162,255))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
 }
-UIGradient1.Parent = T
+UIGradient1.Parent = HeaderText
+
+local function updateHeaderSize()
+    HeaderText.Size = UDim2.new(0, HeaderText.TextBounds.X, 0, 18)
+    if HeaderText.Size.X.Offset then
+        DropShadowHolder.Size = UDim2.new(0, HeaderText.TextBounds.X + 68, 0, 48)
+    end
+end
+
+HeaderText:GetPropertyChangedSignal("Text"):Connect(updateHeaderSize)
+updateHeaderSize()
 
 local statusLabel = Instance.new("TextLabel")
-statusLabel.Font = Enum.Font.Gotham
-statusLabel.Text = "Status: Farm level"
-statusLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-statusLabel.TextSize = 14
+statusLabel.Parent = ScreenGui
+statusLabel.Position = UDim2.new(0.5, 0, 0.11, 0)
+statusLabel.Size = UDim2.new(0, 200, 0, 25)
 statusLabel.AnchorPoint = Vector2.new(0.5, 0)
 statusLabel.BackgroundTransparency = 1
-statusLabel.Position = UDim2.new(0.5, 0, 0, 35)
-statusLabel.Size = UDim2.new(0, 500, 0, 18)
+statusLabel.Text = "Status: Auto Farm"
+statusLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+statusLabel.TextSize = 14
+statusLabel.Font = Enum.Font.GothamBold
+statusLabel.TextXAlignment = Enum.TextXAlignment.Center
+statusLabel.TextStrokeTransparency = 0
+statusLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 statusLabel.ZIndex = 1002
-statusLabel.Parent = Main
 
-local UIGradientStatus = Instance.new("UIGradient")
-UIGradientStatus.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(131,181,255)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(224,162,255))
+-- Thêm UIGradient cho statusLabel để có màu giống HeaderText
+local statusGradient = Instance.new("UIGradient")
+statusGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
 }
-UIGradientStatus.Parent = statusLabel
+statusGradient.Parent = statusLabel
+
+local scriptStartTime = tick()
+local timeRunningText = Instance.new("TextLabel")
+timeRunningText.Parent = ScreenGui
+timeRunningText.Position = UDim2.new(0.5, 0, 0.18, 0)
+timeRunningText.Size = UDim2.new(0, 300, 0, 22)
+timeRunningText.AnchorPoint = Vector2.new(0.5, 0)
+timeRunningText.BackgroundTransparency = 1
+timeRunningText.Text = "00:00:00"
+timeRunningText.TextColor3 = Color3.fromRGB(255, 255, 255)
+timeRunningText.TextSize = 16
+timeRunningText.Font = Enum.Font.SourceSansItalic
+timeRunningText.TextXAlignment = Enum.TextXAlignment.Center
+timeRunningText.TextStrokeTransparency = 0
+timeRunningText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+timeRunningText.ZIndex = 1002
+
+local InfoPanel = Instance.new("Frame")
+InfoPanel.Name = "InfoPanel"
+InfoPanel.Parent = ScreenGui
+InfoPanel.AnchorPoint = Vector2.new(0.5, 0)
+InfoPanel.Position = UDim2.new(0.5, 0, 0.22, 0)
+InfoPanel.Size = UDim2.new(0, 400, 0, 180)
+InfoPanel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+InfoPanel.BackgroundTransparency = 0.3
+InfoPanel.BorderSizePixel = 0
+InfoPanel.ZIndex = 1000
+
+local InfoCorner = Instance.new("UICorner")
+InfoCorner.CornerRadius = UDim.new(0, 8)
+InfoCorner.Parent = InfoPanel
+
+local InfoStroke = Instance.new("UIStroke")
+InfoStroke.Color = Color3.fromRGB(255, 255, 255)
+InfoStroke.Thickness = 1.5
+InfoStroke.Parent = InfoPanel
+
+local InfoGradient = Instance.new("UIGradient")
+InfoGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
+}
+InfoGradient.Parent = InfoStroke
+
+-- Discord Button
+local discordButton = Instance.new("TextButton")
+discordButton.Parent = ScreenGui
+discordButton.Position = UDim2.new(1, -140, 0, 10)
+discordButton.Size = UDim2.new(0, 130, 0, 30)
+discordButton.AnchorPoint = Vector2.new(0, 0)
+discordButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+discordButton.BackgroundTransparency = 0.3
+discordButton.BorderSizePixel = 0
+discordButton.Text = "Discord"
+discordButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+discordButton.TextSize = 12
+discordButton.Font = Enum.Font.GothamBold
+discordButton.TextXAlignment = Enum.TextXAlignment.Center
+discordButton.ZIndex = 1003
+
+local discordCorner = Instance.new("UICorner")
+discordCorner.CornerRadius = UDim.new(0, 5)
+discordCorner.Parent = discordButton
+
+local discordStroke = Instance.new("UIStroke")
+discordStroke.Color = Color3.fromRGB(255, 255, 255)
+discordStroke.Thickness = 1
+discordStroke.Parent = discordButton
+
+local discordGradient = Instance.new("UIGradient")
+discordGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
+}
+discordGradient.Parent = discordStroke
+
+discordButton.MouseButton1Click:Connect(function()
+    setclipboard("discord.gg/brkdnrfyFT")
+    discordButton.Text = "Copied!"
+    wait(1)
+    discordButton.Text = "Discord"
+end)
+
+local playerNameText = Instance.new("TextLabel")
+playerNameText.Parent = InfoPanel
+playerNameText.Position = UDim2.new(0, 15, 0, 10)
+playerNameText.Size = UDim2.new(1, -30, 0, 25)
+playerNameText.BackgroundTransparency = 1
+playerNameText.Text = "User: <font color='rgb(138,43,226)'>" .. (player.DisplayName or "Loading...") .. "</font> | <font color='rgb(0,191,255)'>" .. (player.UserId or "nil") .. "</font>"
+playerNameText.RichText = true
+playerNameText.TextColor3 = Color3.fromRGB(255, 255, 255)
+playerNameText.TextSize = 14
+playerNameText.Font = Enum.Font.GothamBold
+playerNameText.TextXAlignment = Enum.TextXAlignment.Left
+playerNameText.TextStrokeTransparency = 0
+playerNameText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+playerNameText.ZIndex = 1002
+
+local levelText = Instance.new("TextLabel")
+levelText.Parent = InfoPanel
+levelText.Position = UDim2.new(0, 15, 0, 35)
+levelText.Size = UDim2.new(1, -30, 0, 25)
+levelText.BackgroundTransparency = 1
+levelText.Text = "Level: <font color='rgb(255,0,127)'>" .. (player.Data and player.Data.Level and player.Data.Level.Value or "Loading...") .. "</font>"
+levelText.RichText = true
+levelText.TextColor3 = Color3.fromRGB(255, 255, 255)
+levelText.TextSize = 14
+levelText.Font = Enum.Font.GothamBold
+levelText.TextXAlignment = Enum.TextXAlignment.Left
+levelText.TextStrokeTransparency = 0
+levelText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+levelText.ZIndex = 1002
+
+local beliFragmentsText = Instance.new("TextLabel")
+beliFragmentsText.Parent = InfoPanel
+beliFragmentsText.Position = UDim2.new(0, 15, 0, 60)
+beliFragmentsText.Size = UDim2.new(1, -30, 0, 25)
+beliFragmentsText.BackgroundTransparency = 1
+local beliValue = (player.Data and player.Data.Beli and tostring(player.Data.Beli.Value) or "Loading...")
+local fragmentsValue = (player.Data and player.Data.Fragments and tostring(player.Data.Fragments.Value) or "0")
+beliFragmentsText.Text = "Beli: <font color='rgb(255,0,127)'>" .. beliValue .. "</font> | Fragments: <font color='rgb(138,43,226)'>" .. fragmentsValue .. "</font>"
+beliFragmentsText.RichText = true
+beliFragmentsText.TextColor3 = Color3.fromRGB(255, 255, 255)
+beliFragmentsText.TextSize = 14
+beliFragmentsText.Font = Enum.Font.GothamBold
+beliFragmentsText.TextXAlignment = Enum.TextXAlignment.Left
+beliFragmentsText.TextStrokeTransparency = 0
+beliFragmentsText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+beliFragmentsText.ZIndex = 1002
+
+local raceText = Instance.new("TextLabel")
+raceText.Parent = InfoPanel
+raceText.Position = UDim2.new(0, 15, 0, 85)
+raceText.Size = UDim2.new(1, -30, 0, 25)
+raceText.BackgroundTransparency = 1
+raceText.Text = "Race: <font color='rgb(0,191,255)'>" .. (player.Data and player.Data.Race and player.Data.Race.Value or "Loading...") .. "</font>"
+raceText.RichText = true
+raceText.TextColor3 = Color3.fromRGB(255, 255, 255)
+raceText.TextSize = 14
+raceText.Font = Enum.Font.GothamBold
+raceText.TextXAlignment = Enum.TextXAlignment.Left
+raceText.TextStrokeTransparency = 0
+raceText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+raceText.ZIndex = 1002
+
+local devilFruitText = Instance.new("TextLabel")
+devilFruitText.Parent = InfoPanel
+devilFruitText.Position = UDim2.new(0, 15, 0, 110)
+devilFruitText.Size = UDim2.new(1, -30, 0, 25)
+devilFruitText.BackgroundTransparency = 1
+devilFruitText.Text = "Devil Fruit: <font color='rgb(255,0,127)'>" .. (player.Data and player.Data.DevilFruit and player.Data.DevilFruit.Value or "None") .. "</font>"
+devilFruitText.RichText = true
+devilFruitText.TextColor3 = Color3.fromRGB(255, 255, 255)
+devilFruitText.TextSize = 14
+devilFruitText.Font = Enum.Font.GothamBold
+devilFruitText.TextXAlignment = Enum.TextXAlignment.Left
+devilFruitText.TextStrokeTransparency = 0
+devilFruitText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+devilFruitText.ZIndex = 1002
+
+local function CheckRace()
+    local bf = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Wenlocktoad", "1")
+    local c4 = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Alchemist", "1")
+    if game.Players.LocalPlayer.Character:FindFirstChild("RaceTransformed") then
+        return game:GetService('Players').LocalPlayer.Data.Race.Value .. " V4"
+    end
+    if bf == -2 then
+        return game:GetService('Players').LocalPlayer.Data.Race.Value .. " V3"
+    end
+    if c4 == -2 then
+        return game:GetService('Players').LocalPlayer.Data.Race.Value .. " V2"
+    end
+    return game:GetService('Players').LocalPlayer.Data.Race.Value .. " V1"
+end
+
+local function CheckRace()
+    local bf = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Wenlocktoad", "1")
+    local c4 = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Alchemist", "1")
+    if game.Players.LocalPlayer.Character:FindFirstChild("RaceTransformed") then
+        return game:GetService('Players').LocalPlayer.Data.Race.Value .. " V4"
+    end
+    if bf == -2 then
+        return game:GetService('Players').LocalPlayer.Data.Race.Value .. " V3"
+    end
+    if c4 == -2 then
+        return game:GetService('Players').LocalPlayer.Data.Race.Value .. " V2"
+    end
+    return game:GetService('Players').LocalPlayer.Data.Race.Value .. " V1"
+end
+
+
+-- Vertical Divider Line
+local dividerLine = Instance.new("Frame")
+dividerLine.Parent = InfoPanel
+dividerLine.Position = UDim2.new(0.5, -1, 0, 10)
+dividerLine.Size = UDim2.new(0, 2, 0, 166)
+dividerLine.AnchorPoint = Vector2.new(0.5, 0)
+dividerLine.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+dividerLine.BorderSizePixel = 0
+dividerLine.ZIndex = 1001
+
+local dividerGradient = Instance.new("UIGradient")
+dividerGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
+}
+dividerGradient.Rotation = 90
+dividerGradient.Parent = dividerLine
+
+local function updatePlayerStats()
+    if player.Data and player.Data.Level then
+        levelText.Text = "Level: <font color='rgb(255,0,127)'>" .. player.Data.Level.Value .. "</font>"
+    end
+    
+    if player.DisplayName and player.Name then
+        playerNameText.Text = "User: <font color='rgb(138,43,226)'>" .. player.DisplayName .. "</font>"
+    end
+    
+    local beliValue = (player.Data and player.Data.Beli and tostring(player.Data.Beli.Value):reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", "") or "Loading...")
+    local fragmentsValue = (player.Data and player.Data.Fragments and tostring(player.Data.Fragments.Value):reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", "") or "0")
+    beliFragmentsText.Text = "Beli: <font color='rgb(255,0,127)'>" .. beliValue .. "</font>\nFragments: <font color='rgb(138,43,226)'>" .. fragmentsValue .. "</font>"
+    
+    if player.Data and player.Data.Race then
+        raceText.Text = "Race: <font color='rgb(0,191,255)'>" .. CheckRace() .. "</font>"
+    end
+    
+    if player.Data and player.Data.DevilFruit then
+        devilFruitText.Text = "Devil Fruit: <font color='rgb(255,0,127)'>" .. player.Data.DevilFruit.Value .. "</font>"
+    end
+    
+    
+    local currentTime = tick()
+    local runningTime = currentTime - scriptStartTime
+    local hours = math.floor(runningTime / 3600)
+    local minutes = math.floor((runningTime % 3600) / 60)
+    local seconds = math.floor(runningTime % 60)
+    timeRunningText.Text = string.format("%02d:%02d:%02d", hours, minutes, seconds)
+end
+
+-- Toggle System
+local isMinimized = false
+
+local function toggleGUI()
+    isMinimized = not isMinimized
+    
+    if isMinimized then
+        InfoPanel.Visible = false
+        discordButton.Visible = false
+        timeRunningText.Visible = false  -- Ẩn time running text khi minimize
+        
+    else
+        InfoPanel.Visible = true
+        discordButton.Visible = true
+        timeRunningText.Visible = true   -- Hiện time running text khi maximize
+    end
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.KeyCode == Enum.KeyCode.P then
+        toggleGUI()
+    end
+end)
+
+local Lighting = game:GetService("Lighting")
+local BlurEffect = Instance.new("BlurEffect", Lighting)
+BlurEffect.Size = 12.5 
+BlurEffect.Enabled = true
+
+spawn(function()
+    while wait(1) do
+        updatePlayerStats()
+    end
+end)
 if pi == 2753915549 then
     Old_World = true
 elseif pi == 4442272183 then
