@@ -72,12 +72,12 @@ local cg = game:GetService("CoreGui")
 local player = game:GetService("Players").LocalPlayer
 local TweenService = game:GetService("TweenService")
 
-if cg:FindFirstChild('AuzuRa hub') then
-    cg:FindFirstChild('AuzuRa hub'):Destroy()
+if cg:FindFirstChild('Crystal hub') then
+    cg:FindFirstChild('Crystal hub'):Destroy()
 end
 
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "AuzuRa hub"
+ScreenGui.Name = "Crystal hub"
 ScreenGui.Parent = cg
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -152,7 +152,7 @@ UIGradient.Color = ColorSequence.new{
 UIGradient.Parent = UIStroke
 
 HeaderText.Font = Enum.Font.GothamBold
-HeaderText.Text = "AuzuRa hub"
+HeaderText.Text = "Crystal hub"
 HeaderText.TextColor3 = Color3.fromRGB(255, 255, 255)
 HeaderText.TextSize = 18
 HeaderText.TextYAlignment = Enum.TextYAlignment.Bottom
@@ -418,7 +418,7 @@ soulGuitarText.Parent = ItemsPanel
 soulGuitarText.Position = UDim2.new(0, 10, 0, 8)
 soulGuitarText.Size = UDim2.new(1, -20, 0, 22)
 soulGuitarText.BackgroundTransparency = 1
-soulGuitarText.Text = "Soul Guitar: <font color='rgb(255,100,100)'>❌</font>"
+soulGuitarText.Text = "Soon all ....</font>"
 soulGuitarText.RichText = true
 soulGuitarText.TextColor3 = Color3.fromRGB(255, 255, 255)
 soulGuitarText.TextSize = 12
@@ -611,13 +611,6 @@ local function updatePlayerStats()
         devilFruitText.Text = "Devil Fruit: <font color='rgb(255,0,127)'>"  .. player.Data.DevilFruit.Value .. "</font>"
     end    
     awakenedMovesText.Text = "Awakened: " .. getAwakenedMoves()
-    
-    soulGuitarText.Text = "Soul Guitar: " 
-    tripleKatanaText.Text = "True Triple Katana: " 
-    cursedKatanaText.Text = "Cursed Dual Katana: " 
-    godhumanText.Text = "Godhuman: "
-    pullLeverText.Text = "Pull Lever: " 
-    valkyrieText.Text = "Valkyrie Helm: "
     
     local currentTime = tick()
     local runningTime = currentTime - scriptStartTime
@@ -7866,7 +7859,7 @@ local function sendWebhook(info)
     local bloxFruitText = info.BloxFruitInventory
     
     local Embed = {
-        ["title"] = "Auzura Webhook Config",
+        ["title"] = "Crystal Webhook Config",
         ["description"] = "",
         ["type"] = "rich",
         ["color"] = tonumber(0x00ff00),
@@ -7935,13 +7928,13 @@ local function sendWebhook(info)
             }
         },
         ["footer"] = {
-            ["text"] = "Auzura hub config webhook",
+            ["text"] = "Crystal hub config webhook",
             ["icon_url"] = "https://cdn.discordapp.com/emojis/1234567890123456789.png"
         }
     }
     
     local data = {
-        ["username"] = "Auzura Enhanced Webhook",
+        ["username"] = "Crystal Enhanced Webhook",
         ["avatar_url"] = "https://cdn.discordapp.com/avatars/123456789/avatar.png",
         ["content"] = pingText,
         ["embeds"] = {Embed}
