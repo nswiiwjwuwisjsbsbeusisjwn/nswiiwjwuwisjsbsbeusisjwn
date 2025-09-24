@@ -3595,7 +3595,7 @@ if Level.Value < 2600 or not Three_World then
             else
                 rt.Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(-7894.6176757813, 5547.1416015625, -380.29119873047))
             end
-        elseif Level.Value >= 71 then
+        elseif Level.Value >= 71 and Level.Value < 2600 then
             if lp.PlayerGui.Main.Quest.Visible then
                 if mt.sf(lp.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, tostring(NameEnemy)) then
                     if mt.ffc(es, Enemy) then
@@ -8004,8 +8004,6 @@ local function sendWebhook(info)
     end
 end
 
-checkAccountStatus()
-sendWebhook(collectInfo())
 
 task.spawn(function()
     while task.wait(webhookInterval) do
