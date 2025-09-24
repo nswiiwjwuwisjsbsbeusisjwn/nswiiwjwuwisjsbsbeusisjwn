@@ -4,21 +4,49 @@ if not game:IsLoaded() then
     until game:IsLoaded()
 end
 getgenv().Configs = {
-    ["Webhook"] = {
+    ["Quest"] = {
+        ["Evo Race V2"] = true;
+        ["Evo Race V3"] = true;
+        ["RGB Haki"] = true;
+        ["Pull Lerver"] = true;
+    };
+        ["Webhook"] = {
         ["Url Webhook"] = "https://discord.com/api/webhooks/1420061780700565676/gU7v21nSPGqGXcFV_1Jdltptt7lMM2dBXwpzI4OkC0scAwaionknOFndpugnTK-c_4Bl";
         ["Ping discord"] = "1003662302412820622";      
         ["Time Send"] = "10m";
     };
-    ["Quest"] = {
-        ["Evo Race V1"] = true;
-        ["Evo Race V2"] = true;
-        ["RGB Haki"] = false;
-        ["Pull Lerver"] = true;
-    };
-    Sword = {
+    ["Sword"] = {
+        "Dual-Headed Blade";
+        "Smoke Admiral";
+        "Wardens Sword";
+        "Cutlass";
+        "Katana";
+        "Dual Katana";
+        "Triple Katana";
+        "Iron Mace";
         "Saber";
+        "Pole (1st Form)";
+        "Gravity Blade";
+        "Longsword";
+        "Rengoku";
+        "Midnight Blade";
+        "Soul Cane";
+        "Bisento";
+        "Yama";
+        "Tushita";
+        "Cursed Dual Katana";
     };
-    Gun = {
+    ["Gun"] = {
+        "Soul Guitar";
+        "Kabucha";
+        "Venom Bow";
+        "Musket";
+        "Flintlock";
+        "Refined Slingshot"; 
+        "Magma Blaster";
+        "Dual Flintlock";
+        "Cannon";
+        "Bizarre Revolver";
         "Bazooka";
     };
     ["FPS Booster"] = false;
@@ -72,17 +100,16 @@ local cg = game:GetService("CoreGui")
 local player = game:GetService("Players").LocalPlayer
 local TweenService = game:GetService("TweenService")
 
-if cg:FindFirstChild('AuzuRa hub') then
-    cg:FindFirstChild('AuzuRa hub'):Destroy()
+if cg:FindFirstChild('Crystal hub') then
+    cg:FindFirstChild('Crystal hub'):Destroy()
 end
 
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "AuzuRa hub"
+ScreenGui.Name = "Crystal hub"
 ScreenGui.Parent = cg
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- Main Header Container
 local DropShadowHolder = Instance.new("Frame")
 local DropShadow = Instance.new("ImageLabel")
 local turtle = Instance.new("ImageLabel")
@@ -93,7 +120,6 @@ local UIGradient = Instance.new("UIGradient")
 local HeaderText = Instance.new("TextLabel")
 local UIGradient1 = Instance.new("UIGradient")
 
--- Header Setup
 DropShadowHolder.AnchorPoint = Vector2.new(0.5, 0)
 DropShadowHolder.BackgroundTransparency = 1
 DropShadowHolder.BorderSizePixel = 0
@@ -152,7 +178,7 @@ UIGradient.Color = ColorSequence.new{
 UIGradient.Parent = UIStroke
 
 HeaderText.Font = Enum.Font.GothamBold
-HeaderText.Text = "AuzuRa hub"
+HeaderText.Text = "Crystal hub"
 HeaderText.TextColor3 = Color3.fromRGB(255, 255, 255)
 HeaderText.TextSize = 18
 HeaderText.TextYAlignment = Enum.TextYAlignment.Bottom
@@ -172,7 +198,6 @@ UIGradient1.Color = ColorSequence.new{
 }
 UIGradient1.Parent = HeaderText
 
--- Status Label
 local statusLabel = Instance.new("TextLabel")
 statusLabel.Parent = ScreenGui
 statusLabel.Position = UDim2.new(0.5, 0, 0.12, 0)
@@ -196,7 +221,6 @@ statusGradient.Color = ColorSequence.new{
 }
 statusGradient.Parent = statusLabel
 
--- Time Running Display
 local scriptStartTime = tick()
 local timeRunningText = Instance.new("TextLabel")
 timeRunningText.Parent = ScreenGui
@@ -213,7 +237,6 @@ timeRunningText.TextStrokeTransparency = 0
 timeRunningText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 timeRunningText.ZIndex = 1002
 
--- Main Container for Panels
 local MainContainer = Instance.new("Frame")
 MainContainer.Name = "MainContainer"
 MainContainer.Parent = ScreenGui
@@ -223,7 +246,6 @@ MainContainer.AnchorPoint = Vector2.new(0.5, 0)
 MainContainer.BackgroundTransparency = 1
 MainContainer.ZIndex = 999
 
--- Info Panel (Left)
 local InfoPanel = Instance.new("Frame")
 InfoPanel.Name = "InfoPanel"
 InfoPanel.Parent = MainContainer
@@ -251,7 +273,6 @@ InfoGradient.Color = ColorSequence.new{
 }
 InfoGradient.Parent = InfoStroke
 
--- Items Panel (Right)
 local ItemsPanel = Instance.new("Frame")
 ItemsPanel.Name = "ItemsPanel"
 ItemsPanel.Parent = MainContainer
@@ -279,7 +300,6 @@ ItemsGradient.Color = ColorSequence.new{
 }
 ItemsGradient.Parent = ItemsStroke
 
--- Discord Button
 local discordButton = Instance.new("TextButton")
 discordButton.Parent = ScreenGui
 discordButton.Position = UDim2.new(1, -130, 0, 10)
@@ -317,7 +337,6 @@ discordButton.MouseButton1Click:Connect(function()
     discordButton.Text = "Discord"
 end)
 
--- Info Panel Content
 local playerNameText = Instance.new("TextLabel")
 playerNameText.Parent = InfoPanel
 playerNameText.Position = UDim2.new(0, 10, 0, 8)
@@ -503,7 +522,6 @@ valkyrieText.TextStrokeTransparency = 0
 valkyrieText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 valkyrieText.ZIndex = 1002
 
--- Utility Functions
 local function CheckRace()
     local success1, bf = pcall(function()
         return game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Wenlocktoad", "1")
@@ -3543,7 +3561,7 @@ local function FarmLevel()
     end
 DataQuest()
 if Quest ~= nil then return end
-if Level.Value < 2800 or not Three_World then
+if Level.Value < 2600 or not Three_World then
         if Level.Value <= 9 and not New_World and not Three_World then
             if lp.PlayerGui.Main.Quest.Visible then
                 if mt.sf(lp.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, tostring(NameEnemy)) then
@@ -4035,48 +4053,48 @@ task.spawn(function()
                     end
                     if not FindFruit then
                         -- World 1
-                        if mt.tf(Configs.Gun, "Magma Blaster") and Level.Value >= 200 and not mt.gi("Magma Blaster") and Old_World and mt.CheckBoss("Magma Admiral") then
+                        if mt.tf(Configs.["Gun"], "Magma Blaster") and Level.Value >= 200 and not mt.gi("Magma Blaster") and Old_World and mt.CheckBoss("Magma Admiral") then
                             Quest = "Magma Blaster"
                             return
                         end
-                        if mt.tf(Configs.Gun, "Bazooka") and Level.Value >= 200 and not mt.gi("Bazooka") and Old_World and mt.CheckBoss("Wysper") then
+                        if mt.tf(Configs.["Gun"], "Bazooka") and Level.Value >= 200 and not mt.gi("Bazooka") and Old_World and mt.CheckBoss("Wysper") then
                             Quest = "Bazooka"
                             return
                         end
-                        if mt.tf(Configs.Sword, "Saber") and Level.Value >= 200 and not mt.gi("Saber") then
+                        if mt.tf(Configs.["Sword"], "Saber") and Level.Value >= 200 and not mt.gi("Saber") then
                             Quest = "Saber"
                             return
                         end
-                        if mt.tf(Configs.Sword, "Shark Saw") and Level.Value >= 100 and not mt.gi("Shark Saw") and Old_World and mt.CheckBoss("The Saw") then
+                        if mt.tf(Configs.["Sword"], "Shark Saw") and Level.Value >= 100 and not mt.gi("Shark Saw") and Old_World and mt.CheckBoss("The Saw") then
                             Quest = "Shark Saw"
                             return
                         end
-                        if mt.tf(Configs.Sword, "Wardens Sword") and Level.Value >= 100 and not mt.gi("Wardens Sword") and Old_World and mt.CheckBoss("Chief Warden") then
+                        if mt.tf(Configs.["Sword"], "Wardens Sword") and Level.Value >= 100 and not mt.gi("Wardens Sword") and Old_World and mt.CheckBoss("Chief Warden") then
                             Quest = "Wardens Sword"
                             return
                         end
-                        if mt.tf(Configs.Sword, "Pole (1st Form)") and Level.Value >= 100 and not mt.gi("Pole (1st Form)") and Old_World and mt.CheckBoss("Thunder God") then
+                        if mt.tf(Configs.["Sword"], "Pole (1st Form)") and Level.Value >= 100 and not mt.gi("Pole (1st Form)") and Old_World and mt.CheckBoss("Thunder God") then
                             Quest = "Pole (1st Form)"
                             return
                         end
                         -- World 2
                         if rt:WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer("Alchemist","1") ~= -2 and Beli.Value >= 2500000 and Level.Value >= 850 and rt.Remotes.CommF_:InvokeServer("BartiloQuestProgress","Bartilo") == 3 and not mt.ffc(lp.Data.Race, "Evolved") then 
-                            Quest = "Evo Race V1"
-                            return
-                        end
-                        if rt.Remotes.CommF_:InvokeServer("Wenlocktoad","3") ~= -2 and rt.Remotes.CommF_:InvokeServer("TalkTrevor","1") == 0 and mt.IsHeavenly() and Lvl.Value >= 1400 and Beli.Value >= 2000000 then
                             Quest = "Evo Race V2"
                             return
                         end
-                        if mt.tf(Configs.Sword, "Gravity Blade") and not mt.gi("Gravity Blade") and New_World and mt.CheckBoss("Orbitus") and Level.Value >= 800 then
+                        if rt.Remotes.CommF_:InvokeServer("Wenlocktoad","3") ~= -2 and rt.Remotes.CommF_:InvokeServer("TalkTrevor","1") == 0 and mt.IsHeavenly() and Lvl.Value >= 1400 and Beli.Value >= 2000000 then
+                            Quest = "Evo Race V3"
+                            return
+                        end
+                        if mt.tf(Configs.["Sword"], "Gravity Blade") and not mt.gi("Gravity Blade") and New_World and mt.CheckBoss("Orbitus") and Level.Value >= 800 then
                             Quest = "Gravity Blade"
                             return
                         end
-                        if mt.tf(Configs.Sword, "Longsword") and not mt.gi("Longsword") and New_World and mt.CheckBoss("Diamond") and Level.Value >= 800 then
+                        if mt.tf(Configs.["Sword"], "Longsword") and not mt.gi("Longsword") and New_World and mt.CheckBoss("Diamond") and Level.Value >= 800 then
                             Quest = "Longsword"
                             return
                         end
-                        if mt.tf(Configs.Sword, "Rengoku") and not mt.gi("Rengoku") and New_World and mt.CheckBoss("Awakened Ice Admiral") and Level.Value >= 800 then
+                        if mt.tf(Configs.["Sword"], "Rengoku") and not mt.gi("Rengoku") and New_World and mt.CheckBoss("Awakened Ice Admiral") and Level.Value >= 800 then
                             Quest = "Rengoku"
                             return
                         end
@@ -4102,7 +4120,7 @@ task.spawn(function()
                             mt.wt(1)
                             return
                         end
-                        if mt.tf(Configs.Sword, "Flail") and not mt.gi("Flail") and New_World and mt.CheckBoss("Smoke Admiral") then
+                        if mt.tf(Configs.["Sword"], "Flail") and not mt.gi("Flail") and New_World and mt.CheckBoss("Smoke Admiral") then
                             Quest = "Flail"
                             return
                         end
@@ -4121,15 +4139,15 @@ task.spawn(function()
                             return
                         end
                         -- World3
-                        if Three_World and mt.tf(Configs.Sword, "Yama") and rt.Remotes.CommF_:InvokeServer("EliteHunter", "Progress") >= 30 and not mt.gi("Yama") then
+                        if Three_World and mt.tf(Configs.["Sword"], "Yama") and rt.Remotes.CommF_:InvokeServer("EliteHunter", "Progress") >= 30 and not mt.gi("Yama") then
                             Quest = "Yama"
                             return
                         end
-                        if Three_World and mt.tf(Configs.Sword, "Tushita") and not mt.gi("Tushita") and Unlock_Tushita_Quest then
+                        if Three_World and mt.tf(Configs.["Sword"], "Tushita") and not mt.gi("Tushita") and Unlock_Tushita_Quest then
                             Quest = "Longma"
                             return
                         end
-                        if mt.tf(Configs.Gun, "Soul Guitar") and not mt.gi("Soul Guitar") and Level.Value >= 2000 and mt.CheckItem('Dark Fragment') >= 1 then
+                        if mt.tf(Configs.["Gun"], "Soul Guitar") and not mt.gi("Soul Guitar") and Level.Value >= 2000 and mt.CheckItem('Dark Fragment') >= 1 then
                             Quest = "Soul Guitar"
                             return
                         end
@@ -4139,11 +4157,11 @@ task.spawn(function()
                                 return
                             end
                         end
-                        if mt.tf(Configs.Gun, "Venom Bow") and not mt.gi("Venom Bow") and Three_World and mt.CheckBoss("Hydra Leader") then
+                        if mt.tf(Configs.["Gun"], "Venom Bow") and not mt.gi("Venom Bow") and Three_World and mt.CheckBoss("Hydra Leader") then
                             Quest = "Venom Bow"
                             return
                         end
-                        if mt.tf(Configs.Sword, "Twin Hooks") and not mt.gi("Twin Hooks") and Three_World and mt.CheckBoss("Captain Elephant") then
+                        if mt.tf(Configs.["Sword"], "Twin Hooks") and not mt.gi("Twin Hooks") and Three_World and mt.CheckBoss("Captain Elephant") then
                             Quest = "Twin Hooks"
                             return
                         end
@@ -6023,7 +6041,7 @@ task.spawn(function()
                 else
                     rt.Remotes.CommF_:InvokeServer("TravelDressrosa")
                 end
-            elseif Quest == "Evo Race V1" then
+            elseif Quest == "Evo Race V2" then
                 if New_World then
                     if Start_Quest_Evo_V1 then 
                         if not mt.ffc(lp.Backpack, "Flower 3") and not mt.ffc(lp.Character, "Flower 3") then
@@ -6071,7 +6089,7 @@ task.spawn(function()
                 else
                     rt.Remotes.CommF_:InvokeServer("TravelDressrosa")
                 end
-            elseif Quest == "Evo Race V2" then
+            elseif Quest == "Evo Race V3" then
                 if New_World then
                     if lp.Data.Race.Value == 'Human' then
                         if Quest_Start_Evo_Human_V3 then
@@ -7297,13 +7315,13 @@ local stayTime = 0
 local checkInterval = 1
 task.spawn(function()
     while task.wait() do
-        if Quest ~= "Cursed Dual Katana" and Quest ~= "Evo Race V2" and Quest ~= "Evo Race V1" and not SROP then
+        if Quest ~= "Cursed Dual Katana" and Quest ~= "Evo Race V3" and Quest ~= "Evo Race V2" and not SROP then
             task.wait(checkInterval)
             local currentPosition = waitForCharacter().Position
             local distance = (currentPosition - lastPosition).Magnitude
             if distance <= 1 then
                 stayTime = stayTime + checkInterval
-                if stayTime >= 30 and Quest ~= "Cursed Dual Katana" and Quest ~= "Evo Race V2" and Quest ~= "Evo Race V1" and not SROP then
+                if stayTime >= 30 and Quest ~= "Cursed Dual Katana" and Quest ~= "Evo Race V3" and Quest ~= "Evo Race V2" and not SROP then
                     mt.HopLowServer(9)
                 end
             else
@@ -7355,54 +7373,54 @@ task.spawn(function()
                 rt.Remotes.CommF_:InvokeServer("LegendarySwordDealer", "2")
                 rt.Remotes.CommF_:InvokeServer("LegendarySwordDealer", "3")
             end
-            if mt.tf(Configs.Gun, "Kabucha") and Fragments.Value >= 10000 and not mt.gi("Kabucha") then
+            if mt.tf(Configs.["Gun"], "Kabucha") and Fragments.Value >= 10000 and not mt.gi("Kabucha") then
                 rt.Remotes.CommF_:InvokeServer("BlackbeardReward","Slingshot","2")
             end
             if Beli.Value >= 3000000 then
-                if mt.tf(Configs.Sword, "Bisento") and not mt.gi("Bisento") then
+                if mt.tf(Configs.["Sword"], "Bisento") and not mt.gi("Bisento") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Bisento")
                 end
-                if mt.tf(Configs.Sword, "Cutlass") and not mt.gi("Cutlass") then
+                if mt.tf(Configs.["Sword"], "Cutlass") and not mt.gi("Cutlass") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Cutlass")
                 end
-                if mt.tf(Configs.Sword, "Katana") and not mt.gi("Katana") then
+                if mt.tf(Configs.["Sword"], "Katana") and not mt.gi("Katana") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Katana")
                 end  
-                if mt.tf(Configs.Sword, "Dual Katana") and not mt.gi("Dual Katana") then
+                if mt.tf(Configs.["Sword"], "Dual Katana") and not mt.gi("Dual Katana") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Dual Katana")
                 end
-                if mt.tf(Configs.Sword, "Soul Cane") and not mt.gi("Soul Cane") then
+                if mt.tf(Configs.["Sword"], "Soul Cane") and not mt.gi("Soul Cane") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Soul Cane")
                 end
-                if mt.tf(Configs.Sword, "Triple Katana") and not mt.gi("Triple Katana") then
+                if mt.tf(Configs.["Sword"], "Triple Katana") and not mt.gi("Triple Katana") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Triple Katana")
                 end
-                if mt.tf(Configs.Sword, "Iron Mace") and not mt.gi("Iron Mace") then
+                if mt.tf(Configs.["Sword"], "Iron Mace") and not mt.gi("Iron Mace") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Iron Mace")
                 end
-                if mt.tf(Configs.Sword, "Pipe") and not mt.gi("Pipe") then
+                if mt.tf(Configs.["Sword"], "Pipe") and not mt.gi("Pipe") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Pipe")
                 end
-                if mt.tf(Configs.Sword, "Dual-Headed Blade") and not mt.gi("Dual-Headed Blade") then
+                if mt.tf(Configs.["Sword"], "Dual-Headed Blade") and not mt.gi("Dual-Headed Blade") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Dual-Headed Blade")
                 end
-                if mt.tf(Configs.Gun, "Musket") and not mt.gi("Musket") then
+                if mt.tf(Configs.["Gun"], "Musket") and not mt.gi("Musket") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Musket")
                 end
-                if mt.tf(Configs.Gun, "Flintlock") and not mt.gi("Flintlock") then
+                if mt.tf(Configs.["Gun"], "Flintlock") and not mt.gi("Flintlock") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Flintlock")
                 end
-                if mt.tf(Configs.Gun, "Refined Slingshot") and not mt.gi("Refined Slingshot") then
+                if mt.tf(Configs.["Gun"], "Refined Slingshot") and not mt.gi("Refined Slingshot") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Refined Slingshot")
                 end
-                if mt.tf(Configs.Gun, "Dual Flintlock") and not mt.gi("Dual Flintlock") then
+                if mt.tf(Configs.["Gun"], "Dual Flintlock") and not mt.gi("Dual Flintlock") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Dual Flintlock")
                 end
-                if mt.tf(Configs.Gun, "Cannon") and not mt.gi("Cannon") then
+                if mt.tf(Configs.["Gun"], "Cannon") and not mt.gi("Cannon") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Cannon")
                 end
             end
-            if mt.tf(Configs.Sword, "Midnight Blade") and rt.Remotes.CommF_:InvokeServer("Ectoplasm","Check") >= 100 and not mt.gi("Midnight Blade") then
+            if mt.tf(Configs.["Sword"], "Midnight Blade") and rt.Remotes.CommF_:InvokeServer("Ectoplasm","Check") >= 100 and not mt.gi("Midnight Blade") then
                 rt.Remotes.CommF_:InvokeServer("Ectoplasm","Buy",3)
             end
             if not klmdlkgf and Level.Value >= 2000 then
@@ -7911,7 +7929,7 @@ local function sendWebhook(info)
     local bloxFruitText = info.BloxFruitInventory
     
     local Embed = {
-        ["title"] = "AuzuRa Webhook Config",
+        ["title"] = "Crystal Webhook Config",
         ["description"] = "",
         ["type"] = "rich",
         ["color"] = tonumber(0x00ff00),
@@ -7980,13 +7998,13 @@ local function sendWebhook(info)
             }
         },
         ["footer"] = {
-            ["text"] = "AuzuRa hub config webhook",
+            ["text"] = "Crystal hub config webhook",
             ["icon_url"] = "https://cdn.discordapp.com/emojis/1234567890123456789.png"
         }
     }
     
     local data = {
-        ["username"] = "AuzuRa Webhook",
+        ["username"] = "Crystal Webhook",
         ["avatar_url"] = "https://cdn.discordapp.com/avatars/123456789/avatar.png",
         ["content"] = pingText,
         ["embeds"] = {Embed}
@@ -8003,9 +8021,6 @@ local function sendWebhook(info)
         })
     end
 end
-
-checkAccountStatus()
-sendWebhook(collectInfo())
 
 task.spawn(function()
     while task.wait(webhookInterval) do
