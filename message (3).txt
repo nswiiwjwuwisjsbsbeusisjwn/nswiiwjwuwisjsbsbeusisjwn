@@ -4,6 +4,11 @@ if not game:IsLoaded() then
     until game:IsLoaded()
 end
 getgenv().Configs = {
+    ["Webhook"] = {
+        ["Url Webhook"] = "https://discord.com/api/webhooks/1420061780700565676/gU7v21nSPGqGXcFV_1Jdltptt7lMM2dBXwpzI4OkC0scAwaionknOFndpugnTK-c_4Bl";
+        ["Ping discord"] = "1003662302412820622";      
+        ["Time Send"] = "10m";
+    };
     ["Quest"] = {
         ["Evo Race V1"] = true;
         ["Evo Race V2"] = true;
@@ -7367,5 +7372,599 @@ task.spawn(function()
             end
             mt.wt(100)
         end)
+    end
+end)
+
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+local Config = getgenv().Configs
+
+local PlayTimeFile = "PlayTime_"..LocalPlayer.UserId..".json"
+getgenv().PlayTime = 0
+getgenv().LastOnlineStatus = getgenv().LastOnlineStatus or "Online"
+
+local function parseTime(timeStr)
+    local num, unit = timeStr:match("(%d+)([mhd])")
+    if not num or not unit then return 240 end
+    
+    num = tonumber(num)
+    if unit == "m" then
+        return num * 60
+    elseif unit == "h" then
+        return num * 3600
+    elseif unit == "d" then
+        return num * 86400
+    else
+        return 240
+    end
+end
+
+local webhookInterval = parseTime(Config.Webhook["Time Send"] or "4m")
+
+if isfile and isfile(PlayTimeFile) then
+    local success, data = pcall(function()
+        return HttpService:JSONDecode(readfile(PlayTimeFile))
+    end)
+    if success and type(data) == "table" then
+        getgenv().PlayTime = data.PlayTime or 0
+        getgenv().LastOnlineStatus = data.Status or "Online"
+    end
+end
+
+local function savePlayTime()
+    if writefile then
+        local data = {
+            PlayTime = getgenv().PlayTime,
+            Status = getgenv().LastOnlineStatus
+        }
+        writefile(PlayTimeFile, HttpService:JSONEncode(data))
+    end
+end
+
+local lastTick = tick()
+task.spawn(function()
+    while task.wait(1) do
+        local now = tick()
+        if getgenv().LastOnlineStatus == "Online" then
+            getgenv().PlayTime += now - lastTick
+            savePlayTime()
+        end
+        lastTick = now
+    end
+end)
+
+local function formatTime(seconds)
+    local hours = math.floor(seconds / 3600)
+    local minutes = math.floor((seconds % 3600) / 60)
+    local secs = math.floor(seconds % 60)
+    return string.format("%02d:%02d:%02d", hours, minutes, secs)
+end
+
+local function CheckRace()
+    local success1, bf = pcall(function()
+        return game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Wenlocktoad", "1")
+    end)
+    local success2, c4 = pcall(function()
+        return game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Alchemist", "1")
+    end)
+    
+    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("RaceTransformed") then
+        return game:GetService('Players').LocalPlayer.Data.Race.Value .. " V4"
+    end
+    if success1 and bf == -2 then
+        return game:GetService('Players').LocalPlayer.Data.Race.Value .. " V3"
+    end
+    if success2 and c4 == -2 then
+        return game:GetService('Players').LocalPlayer.Data.Race.Value .. " V2"
+    end
+    return game:GetService('Players').LocalPlayer.Data.Race.Value .. " V1"
+end
+
+local function checkAccountStatus()
+    local success, _ = pcall(function() return LocalPlayer.Data.Level.Value end)
+    local status = success and "Online" or "Offline"
+    if status ~= getgenv().LastOnlineStatus then
+        if Config.Webhook["Url Webhook"] ~= "" then
+            local pingText = Config.Webhook["Ping discord"] ~= "" and "<@"..Config.Webhook["Ping discord"]..">" or ""
+            if Config.Webhook["Ping discord"] == "@everyone" then
+                pingText = "@everyone"
+            end
+            
+            local data = {
+                ["username"] = "Account Status",
+                ["content"] = pingText.." Account: "..LocalPlayer.Name.." is now "..status
+            }
+            local req = request or http_request or (syn and syn.request)
+            if req then 
+                req({
+                    Url = Config.Webhook["Url Webhook"], 
+                    Method = "POST", 
+                    Headers = {["Content-Type"] = "application/json"}, 
+                    Body = HttpService:JSONEncode(data)
+                }) 
+            end
+        end
+        getgenv().LastOnlineStatus = status
+        savePlayTime()
+    end
+end
+
+local function checkItem(name, category)
+    local inv = ReplicatedStorage:WaitForChild("Remotes").CommF_:InvokeServer("getInventory")
+    for _, v in pairs(inv) do
+        if v.Type == category and v.Name == name then
+            return name
+        end
+    end
+    return name
+end
+
+local function checkStashItem(name)
+    local stash = ReplicatedStorage:WaitForChild("Remotes").CommF_:InvokeServer("getInventory")
+    for _, v in pairs(stash) do
+        if v.Name == name then
+            return name.." x"..tostring(v.Count or 1)
+        end
+    end
+    return name
+end
+
+local function checkFruitOver1M()
+    local inv = ReplicatedStorage.Remotes.CommF_:InvokeServer("getInventory")
+    local fruits = {}
+    for _, v in pairs(inv) do
+        if v.Type == "Blox Fruit" then
+            local price = v.Price or v.Value or 0
+            if price > 999999 then
+                table.insert(fruits, v.Name.." ("..tostring(price).." Beli)")
+            end
+        end
+    end
+    if #fruits == 0 then
+        return "Không có fruits|none fruit"
+    else
+        return table.concat(fruits, "\n")
+    end
+end
+
+local function checkSea()
+    local placeId = game.PlaceId
+    if placeId == 2753915549 then
+        return "Sea 1"
+    elseif placeId == 4442272183 then
+        return "Sea 2"
+    elseif placeId == 7449423635 then
+        return "Sea 3"
+    else
+        return "Unknown Sea"
+    end
+end
+
+local function getAllInventory()
+    local inventory = {
+        Sword = "",
+        Gun = "",
+        Wear = "",
+        BloxFruit = "",
+        Material = ""
+    }
+    
+    local strings = {}
+    local strings1 = {}
+    local strings2 = {}
+    local strings3 = {}
+    local strings4 = {}
+    
+    for k, v in pairs(game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")) do
+        if v.Type == "Sword" then
+            if type(v.Name) == "table" then
+                for _, name in pairs(v.Name) do
+                    table.insert(strings, name)
+                end
+            else
+                table.insert(strings, v.Name)
+            end
+            inventory.Sword = table.concat(strings, "\n")
+        end
+        if v.Type == "Gun" then
+            if type(v.Name) == "table" then
+                for _, name in pairs(v.Name) do
+                    table.insert(strings1, name)
+                end
+            else
+                table.insert(strings1, v.Name)
+            end
+            inventory.Gun = table.concat(strings1, "\n")
+        end
+        if v.Type == "Wear" then
+            if type(v.Name) == "table" then
+                for _, name in pairs(v.Name) do
+                    table.insert(strings2, name)
+                end
+            else
+                table.insert(strings2, v.Name)
+            end
+            inventory.Wear = table.concat(strings2, "\n")
+        end
+        if v.Type == "Blox Fruit" then
+            if type(v.Name) == "table" then
+                for _, name in pairs(v.Name) do
+                    table.insert(strings3, name)
+                end
+            else
+                table.insert(strings3, v.Name)
+            end
+            inventory.BloxFruit = table.concat(strings3, "\n")
+        end
+        if v.Type == "Material" then
+            if type(v.Name) == "table" then
+                for _, name in pairs(v.Name) do
+                    table.insert(strings4, name .. " " .. tostring(v.Count))
+                end
+            else
+                table.insert(strings4, v.Name .. " " .. tostring(v.Count))
+            end
+            inventory.Material = table.concat(strings4, "\n")
+        end
+    end
+    
+    return inventory
+end
+
+local function GetAllMelee()
+    local meleeList = {
+        {name = "Dark Step", check = function() return tonumber(ReplicatedStorage.Remotes.CommF_:InvokeServer("BuyDarkStep", true)) == 1 end},
+        {name = "Fishman Karate", check = function() return tonumber(ReplicatedStorage.Remotes.CommF_:InvokeServer("BuyFishmanKarate", true)) == 1 end},
+        {name = "Dragon Claw", check = function() return tonumber(ReplicatedStorage.Remotes.CommF_:InvokeServer("BuyDragonClaw", true)) == 1 end},
+        {name = "Electric", check = function() return tonumber(ReplicatedStorage.Remotes.CommF_:InvokeServer("BuyElectric", true)) == 1 end},
+        {name = "Water Kung Fu", check = function() return tonumber(ReplicatedStorage.Remotes.CommF_:InvokeServer("BuyWaterKungFu", true)) == 1 end},
+        {name = "Superhuman", check = function() return tonumber(ReplicatedStorage.Remotes.CommF_:InvokeServer("BuySuperhuman", true)) == 1 end},
+        {name = "Death Step", check = function() return tonumber(ReplicatedStorage.Remotes.CommF_:InvokeServer("BuyDeathStep", true)) == 1 end},
+        {name = "Sharkman Karate", check = function() return tonumber(ReplicatedStorage.Remotes.CommF_:InvokeServer("BuySharkmanKarate", true)) == 1 end},
+        {name = "Electric Claw", check = function() return tonumber(ReplicatedStorage.Remotes.CommF_:InvokeServer("BuyElectricClaw", true)) == 1 end},
+        {name = "Dragon Talon", check = function() return tonumber(ReplicatedStorage.Remotes.CommF_:InvokeServer("BuyDragonTalon", true)) == 1 end},
+        {name = "Godhuman", check = function() return tonumber(ReplicatedStorage.Remotes.CommF_:InvokeServer("BuyGodhuman", true)) == 1 end}
+    }
+    
+    local sanguineComplete = false
+    for _, tool in pairs(LocalPlayer.Backpack:GetChildren()) do
+        if tool:IsA("Tool") and tool.Name == "Sanguine Art" then
+            sanguineComplete = true
+            break
+        end
+    end
+    if not sanguineComplete then
+        for _, tool in pairs(LocalPlayer.Character:GetChildren()) do
+            if tool:IsA("Tool") and tool.Name == "Sanguine Art" then
+                sanguineComplete = true
+                break
+            end
+        end
+    end
+    
+    local result = {}
+    local inv = ReplicatedStorage.Remotes.CommF_:InvokeServer("getInventory")
+    
+    for _, melee in pairs(meleeList) do
+        local success, hasAbility = pcall(melee.check)
+        if success and hasAbility then
+            local mastery = 0
+            for _, v in pairs(inv) do
+                if v.Type == "Melee" and v.Name == melee.name then
+                    mastery = v.Mastery or 0
+                    break
+                end
+            end
+            if mastery == 0 then
+                for _, tool in pairs(LocalPlayer.Backpack:GetChildren()) do
+                    if tool:IsA("Tool") and tool.ToolTip == "Melee" and tool.Name == melee.name then
+                        mastery = tool:FindFirstChild("Level") and tool.Level.Value or 0
+                        break
+                    end
+                end
+            end
+            if mastery == 0 then
+                for _, tool in pairs(LocalPlayer.Character:GetChildren()) do
+                    if tool:IsA("Tool") and tool.ToolTip == "Melee" and tool.Name == melee.name then
+                        mastery = tool:FindFirstChild("Level") and tool.Level.Value or 0
+                        break
+                    end
+                end
+            end
+            table.insert(result, melee.name.." (M: "..mastery..")")
+        end
+    end
+    
+    if sanguineComplete then
+        local mastery = 0
+        for _, tool in pairs(LocalPlayer.Backpack:GetChildren()) do
+            if tool:IsA("Tool") and tool.Name == "Sanguine Art" then
+                mastery = tool:FindFirstChild("Level") and tool.Level.Value or 0
+                break
+            end
+        end
+        if mastery == 0 then
+            for _, tool in pairs(LocalPlayer.Character:GetChildren()) do
+                if tool:IsA("Tool") and tool.Name == "Sanguine Art" then
+                    mastery = tool:FindFirstChild("Level") and tool.Level.Value or 0
+                    break
+                end
+            end
+        end
+        table.insert(result, "Sanguine Art (M: "..mastery..")")
+    end
+
+    return #result > 0 and table.concat(result, "\n") or "No melee"
+end
+
+local function GetAwaken()
+    local ReturnText = ""
+    local Awakened_Z = "❌"
+    local Awakened_X = "❌"
+    local Awakened_C = "❌"
+    local Awakened_V = "❌"
+    local Awakened_F = "❌"
+    
+    for i, v in pairs(LocalPlayer.Backpack:GetChildren()) do
+        if v:IsA("Tool") then
+            if v.ToolTip == "Blox Fruit" then
+                if v:FindFirstChild("AwakenedMoves") then
+                    if v.AwakenedMoves:FindFirstChild("Z") then
+                        Awakened_Z = "Z: Awakened"
+                    end
+                    if v.AwakenedMoves:FindFirstChild("X") then
+                        Awakened_X = "X: Awakened"
+                    end
+                    if v.AwakenedMoves:FindFirstChild("C") then
+                        Awakened_C = "C: Awakened"
+                    end
+                    if v.AwakenedMoves:FindFirstChild("V") then
+                        Awakened_V = "V: Awakened"
+                    end
+                    if v.AwakenedMoves:FindFirstChild("F") then
+                        Awakened_F = "F: Awakened"
+                    end
+                    ReturnText = Awakened_Z .. "\n" .. Awakened_X .. "\n" .. 
+                                 Awakened_C .. "\n" .. Awakened_V .. "\n" .. Awakened_F
+                else
+                    ReturnText = "This Fruit Can't Awakened"
+                end
+            end
+        end
+    end
+    
+    for i, v in pairs(LocalPlayer.Character:GetChildren()) do
+        if v:IsA("Tool") then
+            if v.ToolTip == "Blox Fruit" then
+                if v:FindFirstChild("AwakenedMoves") then
+                    if v.AwakenedMoves:FindFirstChild("Z") then
+                        Awakened_Z = "Z: Awakened"
+                    end
+                    if v.AwakenedMoves:FindFirstChild("X") then
+                        Awakened_X = "X: Awakened"
+                    end
+                    if v.AwakenedMoves:FindFirstChild("C") then
+                        Awakened_C = "C: Awakened"
+                    end
+                    if v.AwakenedMoves:FindFirstChild("V") then
+                        Awakened_V = "V: Awakened"
+                    end
+                    if v.AwakenedMoves:FindFirstChild("F") then
+                        Awakened_F = "F: Awakened"
+                    end
+                    ReturnText = Awakened_Z .. "\n" .. Awakened_X .. "\n" .. 
+                                 Awakened_C .. "\n" .. Awakened_V .. "\n" .. Awakened_F
+                else
+                    ReturnText = "This Fruit Can't Awakened"
+                end
+            end
+        end
+    end
+    
+    if ReturnText ~= "" then
+        return ReturnText
+    else
+        return "Not Have"
+    end
+end
+
+local function checkGodHumanItem()
+    for _, tool in pairs(LocalPlayer.Backpack:GetChildren()) do
+        if tool:IsA("Tool") and tool.ToolTip == "Melee" and (tool.Name == "God Human" or tool.Name == "Godhuman") then
+            return "God Human"
+        end
+    end
+    for _, tool in pairs(LocalPlayer.Character:GetChildren()) do
+        if tool:IsA("Tool") and tool.ToolTip == "Melee" and (tool.Name == "God Human" or tool.Name == "Godhuman") then
+            return "God Human"
+        end
+    end
+    return "God Human"
+end
+
+local function checkAlucardFragment()
+    local stash = ReplicatedStorage:WaitForChild("Remotes").CommF_:InvokeServer("getInventory")
+    for _, v in pairs(stash) do
+        if v.Name == "Alucard Fragment" then
+            return v.Count or 0
+        end
+    end
+    return 0
+end
+
+local function collectInfo()
+    local alucardCount = checkAlucardFragment()
+    local cdkCheck = checkItem("Cursed Dual Katana","Sword")
+    local cdkText = ""
+    if alucardCount >= 6 then
+        cdkText = "Cursed Dual Katana ("..alucardCount.."/6 got CDK)"
+    else
+        if string.find(cdkCheck,"Cursed Dual Katana") then
+            cdkText = "Cursed Dual Katana ("..alucardCount.."/6 got CDK)"
+        else
+            cdkText = "Cursed Dual Katana (AluCard Fragment: " ..alucardCount.."/6 to get cdk)"
+        end
+    end
+
+    local inventory = getAllInventory()
+
+    return {
+        Username = "Username: "..LocalPlayer.Name.." (ID: "..LocalPlayer.UserId..")",
+        Level = "Level: "..LocalPlayer.Data.Level.Value.." | "..checkSea(),
+        Beli = "Beli: "..LocalPlayer.Data.Beli.Value,
+        Fragments = "Fragments: "..LocalPlayer.Data.Fragments.Value,
+        Race = "Race: "..CheckRace(),
+        AccountStatus = "Account: "..getgenv().LastOnlineStatus,
+        PlayTime = "Total Play Time: "..formatTime(getgenv().PlayTime),
+        Status = "Melee : " .. LocalPlayer.Data.Stats.Melee.Level.Value ..
+                 "\nDefense : " .. LocalPlayer.Data.Stats.Defense.Level.Value ..
+                 "\nSword : " .. LocalPlayer.Data.Stats.Sword.Level.Value ..
+                 "\nGun : " .. LocalPlayer.Data.Stats.Gun.Level.Value ..
+                 "\nDevil Fruit : " .. LocalPlayer.Data.Stats["Demon Fruit"].Level.Value,
+        CDK = cdkText,
+        Yama = checkItem("Yama","Sword"),
+        Tushita = checkItem("Tushita","Sword"),
+        SharkAnchor = checkItem("Shark Anchor","Sword"),
+        GodHuman = checkGodHumanItem(),
+        RipIndraHat = checkItem("Valkyrie Helm","Wear"),
+        MirrorFractal = checkStashItem("Mirror Fractal"),
+        SkullGuitar = checkItem("Skull Guitar","Gun"),
+        FruitOver1M = checkFruitOver1M(),
+        SwordInventory = inventory.Sword,
+        GunInventory = inventory.Gun,
+        MeleeInventory = GetAllMelee(),
+        Awakened = GetAwaken(),
+        MaterialInventory = inventory.Material,
+        WearInventory = inventory.Wear,
+        BloxFruitInventory = inventory.BloxFruit
+    }
+end
+
+local function sendWebhook(info)
+    if Config.Webhook["Url Webhook"] == "" then return end
+    
+    local pingText = Config.Webhook["Ping discord"] ~= "" and "<@"..Config.Webhook["Ping discord"]..">" or ""
+    if Config.Webhook["Ping discord"] == "@everyone" then
+        pingText = "@everyone"
+    end
+    
+    local avt = "https://www.roblox.com/headshot-thumbnail/image?userId="..LocalPlayer.UserId.."&width=420&height=420&format=png"
+    local image = "https://www.roblox.com/avatar-thumbnail/image?userId="..LocalPlayer.UserId.."&width=420&height=420&format=png"
+    
+    local itemsText = info.CDK.."\n"..info.Yama.."\n"..info.Tushita.."\n"..info.SharkAnchor.."\n"..info.GodHuman.."\n"..info.RipIndraHat.."\n"..info.MirrorFractal.."\n"..info.SkullGuitar
+    local fruitsText = info.FruitOver1M
+    local statsText = info.Username.."\n"..info.Level.."\n"..info.Beli.."\n"..info.Fragments.."\n"..info.Race.."\n"..info.AccountStatus.."\n"..info.PlayTime
+    local statusText = info.Status
+    local swordText = info.SwordInventory
+    local gunText = info.GunInventory
+    local meleeText = info.MeleeInventory
+    local awakenedText = info.Awakened
+    local materialText = info.MaterialInventory
+    local wearText = info.WearInventory
+    local bloxFruitText = info.BloxFruitInventory
+    
+    local Embed = {
+        ["title"] = "Auzura Webhook Config",
+        ["description"] = "",
+        ["type"] = "rich",
+        ["color"] = tonumber(0x00ff00),
+        ["thumbnail"] = {
+            ["url"] = avt
+        },
+        ["image"] = {
+            ["url"] = image
+        },
+        ["timestamp"] = os.date("!%Y-%m-%dT%H:%M:%SZ"),
+        ["fields"] = {
+            {
+                ["name"] = "Player Stats",
+                ["value"] = "```\n"..statsText.."\n```",
+                ["inline"] = false
+            },
+            {
+                ["name"] = "Combat Stats",
+                ["value"] = "```sml\n"..statusText.."\n```",
+                ["inline"] = false
+            },
+            {
+                ["name"] = "Important Items",
+                ["value"] = "```\n"..itemsText.."\n```",
+                ["inline"] = false
+            },
+            {
+                ["name"] = "Sword Collection",
+                ["value"] = "```\n"..swordText.."\n```",
+                ["inline"] = false
+            },
+            {
+                ["name"] = "Gun Arsenal",
+                ["value"] = "```\n"..gunText.."\n```",
+                ["inline"] = false
+            },
+            {
+                ["name"] = "Melee Combat Styles",
+                ["value"] = "```\n"..meleeText.."\n```",
+                ["inline"] = false
+            },
+            {
+                ["name"] = "Cosmetics",
+                ["value"] = "```\n"..wearText.."\n```",
+                ["inline"] = false
+            },
+            {
+                ["name"] = "Blox Fruits",
+                ["value"] = "```\n"..bloxFruitText.."\n```",
+                ["inline"] = false
+            },
+            {
+                ["name"] = "Awakened Powers",
+                ["value"] = "```\n"..awakenedText.."\n```",
+                ["inline"] = false
+            },
+            {
+                ["name"] = "Materials",
+                ["value"] = "```\n"..materialText.."\n```",
+                ["inline"] = false
+            },
+            {
+                ["name"] = "Fruit > 1m",
+                ["value"] = "```\n"..fruitsText.."\n```",
+                ["inline"] = false
+            }
+        },
+        ["footer"] = {
+            ["text"] = "Auzura hub config webhook",
+            ["icon_url"] = "https://cdn.discordapp.com/emojis/1234567890123456789.png"
+        }
+    }
+    
+    local data = {
+        ["username"] = "Auzura Enhanced Webhook",
+        ["avatar_url"] = "https://cdn.discordapp.com/avatars/123456789/avatar.png",
+        ["content"] = pingText,
+        ["embeds"] = {Embed}
+    }
+    
+    local body = HttpService:JSONEncode(data)
+    local req = request or http_request or (syn and syn.request)
+    if req then
+        req({
+            Url = Config.Webhook["Url Webhook"], 
+            Method = "POST", 
+            Headers = {["Content-Type"] = "application/json"}, 
+            Body = body
+        })
+    end
+end
+
+checkAccountStatus()
+sendWebhook(collectInfo())
+
+task.spawn(function()
+    while task.wait(webhookInterval) do
+        checkAccountStatus()
+        sendWebhook(collectInfo())
     end
 end)
