@@ -7917,20 +7917,20 @@ local function sendWebhook(info)
                 ["name"] = "Blox Fruits",
                 ["value"] = "```\n"..bloxFruitText.."\n```",
                 ["inline"] = false
-            },
+                            },
             {
-                ["name"] = "Awakened Powers",
+                ["name"] = "Fruit > 1m",
+                ["value"] = "```\n"..fruitsText.."\n```",
+                ["inline"] = false
+            },
+            {           
+                ["name"] = "Awakened Fruit",
                 ["value"] = "```\n"..awakenedText.."\n```",
                 ["inline"] = false
             },
             {
                 ["name"] = "Materials",
                 ["value"] = "```\n"..materialText.."\n```",
-                ["inline"] = false
-            },
-            {
-                ["name"] = "Fruit > 1m",
-                ["value"] = "```\n"..fruitsText.."\n```",
                 ["inline"] = false
             }
         },
