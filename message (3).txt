@@ -3542,7 +3542,7 @@ local function FarmLevel()
     end
     DataQuest()
     if Quest ~= nil then return end
-    if Level.Value < 2800 or not Three_World then
+    if Level.Value < 2600 or not Three_World then
         if Level.Value <= 9 and not New_World and not Three_World then
             if lp.PlayerGui.Main.Quest.Visible then
                 if mt.sf(lp.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, tostring(NameEnemy)) then
@@ -3597,7 +3597,7 @@ local function FarmLevel()
 elseif Level.Value >= 2600 and Three_World then
     if QuestPos and (QuestPos.Position - lp.Character.HumanoidRootPart.Position).Magnitude > 10000 then
         local submarineCF = CFrame.new(-16269.4121, 24.7584076, 1371.70752, -0.999348342, -0.00479344372, 0.0357791297, -0.00262145093, 0.998164296, 0.0605080314, -0.036003489, 0.0603748076, -0.997526407)
-        tp(submarineCF, 1.5)
+        tp(submarineCF)
         if (lp.Character.HumanoidRootPart.Position - submarineCF.Position).Magnitude <= 5 then
             local args = { "TravelToSubmergedIsland" }
             local rf = game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/SubmarineWorkerSpeak")
