@@ -2420,7 +2420,6 @@ elseif Three_World and Lvl.Value >= 2575 and Lvl.Value <= 2599 then
     QuestNumber = 2
     QuestPos = CFrame.new(-16666.5703125, 105.2913818359375, 1576.6925048828125)
     EnemyPos = CFrame.new(-16778.7852, 232.283752, 1442.08325, -0.992449045, -5.54140511e-10, -0.12265785, -2.84580609e-10, 1, -2.21517649e-09, 0.12265785, -2.16354379e-09, -0.992449045)
--- New Submerged enemies for levels 2600-2725
 elseif Three_World and Lvl.Value >= 2600 and Lvl.Value <= 2624 then
     Enemy = "Reef Bandit"
     NameEnemy = "Reef Bandit"
@@ -3542,8 +3541,7 @@ local function FarmLevel()
         end
     end
     DataQuest()
-
-if Quest ~= nil then return end
+    if Quest ~= nil then return end
     if Level.Value < 2800 or not Three_World then
         if Level.Value <= 9 and not New_World and not Three_World then
             if lp.PlayerGui.Main.Quest.Visible then
@@ -3596,84 +3594,53 @@ if Quest ~= nil then return end
             else
                 rt.Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(-7894.6176757813, 5547.1416015625, -380.29119873047))
             end
-        elseif Level.Value >= 71 then
-            if lp.PlayerGui.Main.Quest.Visible then
-                if mt.sf(lp.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, tostring(NameEnemy)) then
-                    if mt.ffc(es, Enemy) then
-                        for i, v in pairs(es:GetChildren()) do
-                            if v.Name == Enemy and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and v:FindFirstChild("HumanoidRootPart") then
-                                repeat mt.wt()
-                                    SROP = false
-                                    tp(v.HumanoidRootPart.CFrame*CFrame.new(0, 30, 0), 1.5)
-                                    if not mt.ffc(lp.Character, "HasBuso") then
-                                        rt.Remotes.CommF_:InvokeServer("Buso")
-                                    end
-                                    mt.BN(v.Name)
-                                    Ew()
-                                until v.Humanoid.Health <= 0 or not es:FindFirstChild(Enemy) or not lp.PlayerGui.Main:FindFirstChild("Quest").Visible or Quest ~= nil
+elseif Level.Value >= 2600 and Three_World then
+    if QuestPos and (QuestPos.Position - lp.Character.HumanoidRootPart.Position).Magnitude > 10000 then
+        local submarineCF = CFrame.new(-16269.4121, 24.7584076, 1371.70752, -0.999348342, -0.00479344372, 0.0357791297, -0.00262145093, 0.998164296, 0.0605080314, -0.036003489, 0.0603748076, -0.997526407)
+        tp(submarineCF, 1.5)
+        if (lp.Character.HumanoidRootPart.Position - submarineCF.Position).Magnitude <= 5 then
+            local args = { "TravelToSubmergedIsland" }
+            local rf = game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/SubmarineWorkerSpeak")
+            if rf then
+                rf:InvokeServer(unpack(args))
+            end
+        end
+        return 
+    end
+elseif Level.Value >= 71 then
+    if lp.PlayerGui.Main.Quest.Visible then
+        if mt.sf(lp.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, tostring(NameEnemy)) then
+            if mt.ffc(es, Enemy) then
+                for i, v in pairs(es:GetChildren()) do
+                    if v.Name == Enemy and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and v:FindFirstChild("HumanoidRootPart") then
+                        repeat mt.wt()
+                            SROP = false
+                            tp(v.HumanoidRootPart.CFrame * CFrame.new(0, 30, 0), 1.5)
+                            if not mt.ffc(lp.Character, "HasBuso") then
+                                rt.Remotes.CommF_:InvokeServer("Buso")
                             end
-                        end
-                    else
-                        tp(EnemyPos, 1.5)
+                            mt.BN(v.Name)
+                            Ew()
+                        until v.Humanoid.Health <= 0 or not es:FindFirstChild(Enemy) or not lp.PlayerGui.Main:FindFirstChild("Quest").Visible or Quest ~= nil
                     end
-                else
-                    rt.Remotes.CommF_:InvokeServer("AbandonQuest")
                 end
             else
-                repeat mt.wt()
-                    tp(QuestPos, 1.5)
-                    if (QuestPos.Position - lp.Character.HumanoidRootPart.Position).Magnitude <= 5 and lp.Character:WaitForChild("Humanoid").Health > 0 then
-                        mt.wt(0.5)
-                        rt:WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer("StartQuest", QuestName, QuestNumber)
-                    end
-                until lp.PlayerGui.Main:FindFirstChild("Quest").Visible or not getgenv().AutoFarm or Quest ~= nil
-            end
-        end
-    elseif Level.Value >= 2600 and Three_World then
-        if QuestPos and (QuestPos.Position - lp.Character.HumanoidRootPart.Position).Magnitude > 10000 then
-            local submarineCF = CFrame.new(-16269.4121, 24.7584076, 1371.70752, -0.999348342, -0.00479344372, 0.0357791297, -0.00262145093, 0.998164296, 0.0605080314, -0.036003489, 0.0603748076, -0.997526407)
-            tp(submarineCF, 1.5)
-            if (lp.Character.HumanoidRootPart.Position - submarineCF.Position).Magnitude <= 5 then
-                local args = { "TravelToSubmergedIsland" }
-                local rf = game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/SubmarineWorkerSpeak")
-                if rf then
-                    rf:InvokeServer(unpack(args))
-                end
-            end
-            return 
-        end
-        
-        if lp.PlayerGui.Main.Quest.Visible then
-            if mt.sf(lp.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, tostring(NameEnemy)) then
-                if mt.ffc(es, Enemy) then
-                    for i, v in pairs(es:GetChildren()) do
-                        if v.Name == Enemy and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and v:FindFirstChild("HumanoidRootPart") then
-                            repeat mt.wt()
-                                SROP = false
-                                tp(v.HumanoidRootPart.CFrame*CFrame.new(0, 30, 0), 1.5)
-                                if not mt.ffc(lp.Character, "HasBuso") then
-                                    rt.Remotes.CommF_:InvokeServer("Buso")
-                                end
-                                mt.BN(v.Name)
-                                Ew()
-                            until v.Humanoid.Health <= 0 or not es:FindFirstChild(Enemy) or not lp.PlayerGui.Main:FindFirstChild("Quest").Visible or Quest ~= nil or not getgenv().AutoFarm
-                        end
-                    end
-                else
-                    tp(EnemyPos, 1.5)
-                end
-            else
-                rt.Remotes.CommF_:InvokeServer("AbandonQuest")
+                tp(EnemyPos, 1.5)
             end
         else
-            repeat mt.wt()
-                tp(QuestPos, 1.5)
-                if (QuestPos.Position - lp.Character.HumanoidRootPart.Position).Magnitude <= 5 and lp.Character:WaitForChild("Humanoid").Health > 0 then
-                    mt.wt(0.5)
-                    rt:WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer("StartQuest", QuestName, QuestNumber)
-                end
-            until lp.PlayerGui.Main:FindFirstChild("Quest").Visible or not getgenv().AutoFarm or Quest ~= nil
+            rt.Remotes.CommF_:InvokeServer("AbandonQuest")
         end
+    else
+        repeat mt.wt()
+            tp(QuestPos, 1.5)
+            if (QuestPos.Position - lp.Character.HumanoidRootPart.Position).Magnitude <= 5 and lp.Character:WaitForChild("Humanoid").Health > 0 then
+                mt.wt(0.5)
+                rt:WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer("StartQuest", QuestName, QuestNumber)
+            end
+        until lp.PlayerGui.Main:FindFirstChild("Quest").Visible or not getgenv().AutoFarm or Quest ~= nil
+    end
+end
+
     elseif Level.Value >= 2800 and Three_World then
         SROP = false
         if mt.ffc(rt ,"Cake Prince") then
