@@ -49,7 +49,7 @@ getgenv().Configs = {
         "Bizarre Revolver";
         "Bazooka";
     };
-    ["FPS Booster"] = false;
+    ["FPS Booster"] = true;
 };
 wait(5)
 if game.Players.LocalPlayer.PlayerGui:FindFirstChild("Main (minimal)") then
@@ -95,7 +95,142 @@ task.spawn(function()
         end
     end
 end)
-wait(2)
+wait(1)
+task.spawn(function()
+    if getgenv().Configs["FPS Booster"] then
+        local enemies = ws:WaitForChild("Enemies")
+        local mapParts = ws:WaitForChild("Map"):GetDescendants()
+        for _, part in ipairs(mapParts) do
+            if part:IsA("BasePart") then
+                local inProtectedPlate = false
+                local questPlates = ws.Map.Jungle:FindFirstChild("QuestPlates")
+                if questPlates then
+                    for i = 1, 5 do
+                        local plate = questPlates:FindFirstChild("Plate" .. i)
+                        if plate and part.Name == "Button" and part:IsDescendantOf(plate) then
+                            inProtectedPlate = true
+                            break
+                        end
+                    end
+                end
+                if not inProtectedPlate then
+                    if not (part.Name == "Door" and part:IsDescendantOf(ws.Map.Ice)) then
+                        local finalJungle = ws.Map.Jungle:FindFirstChild("Final")
+                        if not (finalJungle and part:IsDescendantOf(finalJungle)) then
+                            local iceCastle = ws.Map:FindFirstChild("IceCastle")
+                            if not (iceCastle and part:IsDescendantOf(iceCastle)) then
+                                local safeToDelete = true
+                                for _, enemy in ipairs(enemies:GetChildren()) do
+                                    local enemyHRP = enemy:FindFirstChild("HumanoidRootPart")
+                                    if enemyHRP and (enemyHRP.Position - part.Position).Magnitude < 10 then
+                                        safeToDelete = false
+                                        break
+                                    end
+                                end
+                                if safeToDelete then
+                                    part:Destroy()
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        if lp.PlayerGui:FindFirstChild("Notifications") then
+            lp.PlayerGui.Notifications.Enabled = false
+        end
+        shared = shared or {}
+        if shared.BC_1 == nil then
+            shared.BC_1 = true
+        end
+        if shared.BC_1 and shared.BC_2 == nil then
+            local L_1 = workspace
+            local L_2 = Lighting
+            local L_3 = L_1.Terrain
+            local L_4 = ps
+            local L_5 = lp.Character
+            L_3.WaterWaveSize = 0
+            L_3.WaterWaveSpeed = 0
+            L_3.WaterReflectance = 0
+            L_3.WaterTransparency = 0
+            L_2.GlobalShadows = false
+            L_2.FogEnd = 9e9
+            L_2.Brightness = 0
+            if settings and settings().Rendering then
+                settings().Rendering.QualityLevel = "Level01"
+                settings().Rendering.GraphicsMode = "NoGraphics"
+            end
+            for _, v in pairs(L_1:GetDescendants()) do
+                if v:IsA("BasePart") or v:IsA("SpawnLocation") or v:IsA("WedgePart") or v:IsA("Terrain") or v:IsA("MeshPart") then
+                    v.Material = Enum.Material.Plastic
+                    v.Reflectance = 0
+                    v.CastShadow = false
+                elseif v:IsA("Decal") or v:IsA("Texture") then
+                    v.Texture = ""
+                    v.Transparency = 1
+                elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+                    v.LightInfluence = 0
+                    v.Texture = ""
+                    v.Lifetime = NumberRange.new(0)
+                elseif v:IsA("Explosion") then
+                    v.BlastPressure = 0
+                    v.BlastRadius = 0
+                elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
+                    v.Enabled = false
+                elseif v:IsA("MeshPart") then
+                    v.Material = Enum.Material.Plastic
+                    v.Reflectance = 0
+                    v.TextureID = ""
+                    v.CastShadow = false
+                    v.RenderFidelity = Enum.RenderFidelity.Performance
+                elseif v:IsA("SpecialMesh") then
+                    v.TextureId = ""
+                elseif v:IsA("Shirt") or v:IsA("Pants") or v:IsA("Accessory") then
+                    v:Destroy()
+                end
+            end
+            for _, v in pairs(L_2:GetDescendants()) do
+                if v:IsA("BlurEffect") or v:IsA("SunRaysEffect") or v:IsA("ColorCorrectionEffect") or v:IsA("BloomEffect") or v:IsA("DepthOfFieldEffect") then
+                    v.Enabled = false
+                end
+            end
+            if L_5 then
+                for _, v in pairs(L_5:GetDescendants()) do
+                    if v:IsA("Shirt") or v:IsA("Pants") or v:IsA("Accessory") then
+                        v:Destroy()
+                    end
+                end
+            end
+            if pi == 2753915549 or pi == 4442272183 or pi == 7449423635 then
+                local effectContainer = rt:FindFirstChild("Effect") and rt.Effect:FindFirstChild("Container")
+                if effectContainer then
+                    local sharedEffects = effectContainer:FindFirstChild("Shared")
+                    local miscEffects = effectContainer:FindFirstChild("Misc")
+                    if sharedEffects then
+                        if sharedEffects:FindFirstChild("AirDash") then
+                            sharedEffects.AirDash:Destroy()
+                        end
+                        if sharedEffects:FindFirstChild("LightningTP") then
+                            sharedEffects.LightningTP:Destroy()
+                        end
+                    end
+                    if miscEffects then
+                        if miscEffects:FindFirstChild("Damage") then
+                            miscEffects.Damage:Destroy()
+                        end
+                        if miscEffects:FindFirstChild("Confetti") then
+                            miscEffects.Confetti:Destroy()
+                        end
+                    end
+                    if effectContainer:FindFirstChild("LevelUp") then
+                        effectContainer.LevelUp:Destroy()
+                    end
+                end
+            end
+        end
+        shared.BC_2 = true
+    end
+end)
 local cg = game:GetService("CoreGui")
 local player = game:GetService("Players").LocalPlayer
 local TweenService = game:GetService("TweenService")
@@ -4053,27 +4188,27 @@ task.spawn(function()
                     end
                     if not FindFruit then
                         -- World 1
-                        if mt.tf(Configs.["Gun"], "Magma Blaster") and Level.Value >= 200 and not mt.gi("Magma Blaster") and Old_World and mt.CheckBoss("Magma Admiral") then
+                        if mt.tf(getgenv().Configs["Gun"], "Magma Blaster") and Level.Value >= 200 and not mt.gi("Magma Blaster") and Old_World and mt.CheckBoss("Magma Admiral") then
                             Quest = "Magma Blaster"
                             return
                         end
-                        if mt.tf(Configs.["Gun"], "Bazooka") and Level.Value >= 200 and not mt.gi("Bazooka") and Old_World and mt.CheckBoss("Wysper") then
+                        if mt.tf(getgenv().Configs["Gun"], "Bazooka") and Level.Value >= 200 and not mt.gi("Bazooka") and Old_World and mt.CheckBoss("Wysper") then
                             Quest = "Bazooka"
                             return
                         end
-                        if mt.tf(Configs.["Sword"], "Saber") and Level.Value >= 200 and not mt.gi("Saber") then
+                        if mt.tf(getgenv().Configs["Sword"], "Saber") and Level.Value >= 200 and not mt.gi("Saber") then
                             Quest = "Saber"
                             return
                         end
-                        if mt.tf(Configs.["Sword"], "Shark Saw") and Level.Value >= 100 and not mt.gi("Shark Saw") and Old_World and mt.CheckBoss("The Saw") then
+                        if mt.tf(getgenv().Configs["Sword"], "Shark Saw") and Level.Value >= 100 and not mt.gi("Shark Saw") and Old_World and mt.CheckBoss("The Saw") then
                             Quest = "Shark Saw"
                             return
                         end
-                        if mt.tf(Configs.["Sword"], "Wardens Sword") and Level.Value >= 100 and not mt.gi("Wardens Sword") and Old_World and mt.CheckBoss("Chief Warden") then
+                        if mt.tf(getgenv().Configs["Sword"], "Wardens Sword") and Level.Value >= 100 and not mt.gi("Wardens Sword") and Old_World and mt.CheckBoss("Chief Warden") then
                             Quest = "Wardens Sword"
                             return
                         end
-                        if mt.tf(Configs.["Sword"], "Pole (1st Form)") and Level.Value >= 100 and not mt.gi("Pole (1st Form)") and Old_World and mt.CheckBoss("Thunder God") then
+                        if mt.tf(getgenv().Configs["Sword"], "Pole (1st Form)") and Level.Value >= 100 and not mt.gi("Pole (1st Form)") and Old_World and mt.CheckBoss("Thunder God") then
                             Quest = "Pole (1st Form)"
                             return
                         end
@@ -4086,15 +4221,15 @@ task.spawn(function()
                             Quest = "Evo Race V3"
                             return
                         end
-                        if mt.tf(Configs.["Sword"], "Gravity Blade") and not mt.gi("Gravity Blade") and New_World and mt.CheckBoss("Orbitus") and Level.Value >= 800 then
+                        if mt.tf(getgenv().Configs["Sword"], "Gravity Blade") and not mt.gi("Gravity Blade") and New_World and mt.CheckBoss("Orbitus") and Level.Value >= 800 then
                             Quest = "Gravity Blade"
                             return
                         end
-                        if mt.tf(Configs.["Sword"], "Longsword") and not mt.gi("Longsword") and New_World and mt.CheckBoss("Diamond") and Level.Value >= 800 then
+                        if mt.tf(getgenv().Configs["Sword"], "Longsword") and not mt.gi("Longsword") and New_World and mt.CheckBoss("Diamond") and Level.Value >= 800 then
                             Quest = "Longsword"
                             return
                         end
-                        if mt.tf(Configs.["Sword"], "Rengoku") and not mt.gi("Rengoku") and New_World and mt.CheckBoss("Awakened Ice Admiral") and Level.Value >= 800 then
+                        if mt.tf(getgenv().Configs["Sword"], "Rengoku") and not mt.gi("Rengoku") and New_World and mt.CheckBoss("Awakened Ice Admiral") and Level.Value >= 800 then
                             Quest = "Rengoku"
                             return
                         end
@@ -4120,7 +4255,7 @@ task.spawn(function()
                             mt.wt(1)
                             return
                         end
-                        if mt.tf(Configs.["Sword"], "Flail") and not mt.gi("Flail") and New_World and mt.CheckBoss("Smoke Admiral") then
+                        if mt.tf(getgenv().Configs["Sword"], "Flail") and not mt.gi("Flail") and New_World and mt.CheckBoss("Smoke Admiral") then
                             Quest = "Flail"
                             return
                         end
@@ -4139,15 +4274,15 @@ task.spawn(function()
                             return
                         end
                         -- World3
-                        if Three_World and mt.tf(Configs.["Sword"], "Yama") and rt.Remotes.CommF_:InvokeServer("EliteHunter", "Progress") >= 30 and not mt.gi("Yama") then
+                        if Three_World and mt.tf(getgenv().Configs["Sword"], "Yama") and rt.Remotes.CommF_:InvokeServer("EliteHunter", "Progress") >= 30 and not mt.gi("Yama") then
                             Quest = "Yama"
                             return
                         end
-                        if Three_World and mt.tf(Configs.["Sword"], "Tushita") and not mt.gi("Tushita") and Unlock_Tushita_Quest then
+                        if Three_World and mt.tf(getgenv().Configs["Sword"], "Tushita") and not mt.gi("Tushita") and Unlock_Tushita_Quest then
                             Quest = "Longma"
                             return
                         end
-                        if mt.tf(Configs.["Gun"], "Soul Guitar") and not mt.gi("Soul Guitar") and Level.Value >= 2000 and mt.CheckItem('Dark Fragment') >= 1 then
+                        if mt.tf(getgenv().Configs["Gun"], "Soul Guitar") and not mt.gi("Soul Guitar") and Level.Value >= 2000 and mt.CheckItem('Dark Fragment') >= 1 then
                             Quest = "Soul Guitar"
                             return
                         end
@@ -4157,11 +4292,11 @@ task.spawn(function()
                                 return
                             end
                         end
-                        if mt.tf(Configs.["Gun"], "Venom Bow") and not mt.gi("Venom Bow") and Three_World and mt.CheckBoss("Hydra Leader") then
+                        if mt.tf(getgenv().Configs["Gun"], "Venom Bow") and not mt.gi("Venom Bow") and Three_World and mt.CheckBoss("Hydra Leader") then
                             Quest = "Venom Bow"
                             return
                         end
-                        if mt.tf(Configs.["Sword"], "Twin Hooks") and not mt.gi("Twin Hooks") and Three_World and mt.CheckBoss("Captain Elephant") then
+                        if mt.tf(getgenv().Configs["Sword"], "Twin Hooks") and not mt.gi("Twin Hooks") and Three_World and mt.CheckBoss("Captain Elephant") then
                             Quest = "Twin Hooks"
                             return
                         end
@@ -7373,54 +7508,54 @@ task.spawn(function()
                 rt.Remotes.CommF_:InvokeServer("LegendarySwordDealer", "2")
                 rt.Remotes.CommF_:InvokeServer("LegendarySwordDealer", "3")
             end
-            if mt.tf(Configs.["Gun"], "Kabucha") and Fragments.Value >= 10000 and not mt.gi("Kabucha") then
+            if mt.tf(getgenv().Configs["Gun"], "Kabucha") and Fragments.Value >= 10000 and not mt.gi("Kabucha") then
                 rt.Remotes.CommF_:InvokeServer("BlackbeardReward","Slingshot","2")
             end
             if Beli.Value >= 3000000 then
-                if mt.tf(Configs.["Sword"], "Bisento") and not mt.gi("Bisento") then
+                if mt.tf(getgenv().Configs["Sword"], "Bisento") and not mt.gi("Bisento") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Bisento")
                 end
-                if mt.tf(Configs.["Sword"], "Cutlass") and not mt.gi("Cutlass") then
+                if mt.tf(getgenv().Configs["Sword"], "Cutlass") and not mt.gi("Cutlass") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Cutlass")
                 end
-                if mt.tf(Configs.["Sword"], "Katana") and not mt.gi("Katana") then
+                if mt.tf(getgenv().Configs["Sword"], "Katana") and not mt.gi("Katana") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Katana")
                 end  
-                if mt.tf(Configs.["Sword"], "Dual Katana") and not mt.gi("Dual Katana") then
+                if mt.tf(getgenv().Configs["Sword"], "Dual Katana") and not mt.gi("Dual Katana") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Dual Katana")
                 end
-                if mt.tf(Configs.["Sword"], "Soul Cane") and not mt.gi("Soul Cane") then
+                if mt.tf(getgenv().Configs["Sword"], "Soul Cane") and not mt.gi("Soul Cane") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Soul Cane")
                 end
-                if mt.tf(Configs.["Sword"], "Triple Katana") and not mt.gi("Triple Katana") then
+                if mt.tf(getgenv().Configs["Sword"], "Triple Katana") and not mt.gi("Triple Katana") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Triple Katana")
                 end
-                if mt.tf(Configs.["Sword"], "Iron Mace") and not mt.gi("Iron Mace") then
+                if mt.tf(getgenv().Configs["Sword"], "Iron Mace") and not mt.gi("Iron Mace") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Iron Mace")
                 end
-                if mt.tf(Configs.["Sword"], "Pipe") and not mt.gi("Pipe") then
+                if mt.tf(getgenv().Configs["Sword"], "Pipe") and not mt.gi("Pipe") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Pipe")
                 end
-                if mt.tf(Configs.["Sword"], "Dual-Headed Blade") and not mt.gi("Dual-Headed Blade") then
+                if mt.tf(getgenv().Configs["Sword"], "Dual-Headed Blade") and not mt.gi("Dual-Headed Blade") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Dual-Headed Blade")
                 end
-                if mt.tf(Configs.["Gun"], "Musket") and not mt.gi("Musket") then
+                if mt.tf(getgenv().Configs["Gun"], "Musket") and not mt.gi("Musket") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Musket")
                 end
-                if mt.tf(Configs.["Gun"], "Flintlock") and not mt.gi("Flintlock") then
+                if mt.tf(getgenv().Configs["Gun"], "Flintlock") and not mt.gi("Flintlock") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Flintlock")
                 end
-                if mt.tf(Configs.["Gun"], "Refined Slingshot") and not mt.gi("Refined Slingshot") then
+                if mt.tf(getgenv().Configs["Gun"], "Refined Slingshot") and not mt.gi("Refined Slingshot") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Refined Slingshot")
                 end
-                if mt.tf(Configs.["Gun"], "Dual Flintlock") and not mt.gi("Dual Flintlock") then
+                if mt.tf(getgenv().Configs["Gun"], "Dual Flintlock") and not mt.gi("Dual Flintlock") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Dual Flintlock")
                 end
-                if mt.tf(Configs.["Gun"], "Cannon") and not mt.gi("Cannon") then
+                if mt.tf(getgenv().Configs["Gun"], "Cannon") and not mt.gi("Cannon") then
                     rt.Remotes.CommF_:InvokeServer("BuyItem","Cannon")
                 end
             end
-            if mt.tf(Configs.["Sword"], "Midnight Blade") and rt.Remotes.CommF_:InvokeServer("Ectoplasm","Check") >= 100 and not mt.gi("Midnight Blade") then
+            if mt.tf(getgenv().Configs["Sword"], "Midnight Blade") and rt.Remotes.CommF_:InvokeServer("Ectoplasm","Check") >= 100 and not mt.gi("Midnight Blade") then
                 rt.Remotes.CommF_:InvokeServer("Ectoplasm","Buy",3)
             end
             if not klmdlkgf and Level.Value >= 2000 then
