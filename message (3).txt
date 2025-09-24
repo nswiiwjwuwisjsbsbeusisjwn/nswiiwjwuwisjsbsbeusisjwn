@@ -2613,6 +2613,7 @@ elseif Three_World and Lvl.Value >= 2725 then
     QuestPos = CFrame.new(9637.29395, -1993.13159, 9616.30176)
     EnemyPos = CFrame.new(9559.19434, -1994.39734, 9798.66504)
 end
+end
 
 
 local Tween
