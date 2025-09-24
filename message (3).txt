@@ -2250,7 +2250,7 @@ elseif Three_World and  Lvl.Value >= 2025 and Lvl.Value <= 2049 then
     Enemy = "Demonic Soul"
     NameEnemy = "Demonic Soul"
     QuestName = "HauntedQuest2"
-    QuestNumber = 1                    
+    QuestNumber = 1
     QuestPos = CFrame.new(-9516.99316, 172.017181, 6078.46533, 0, 0, -1, 0, 1, 0, 1, 0, 0)
     EnemyPos = CFrame.new(-9505.8720703125, 172.10482788085938, 6158.9931640625)   
 elseif Three_World and  Lvl.Value >= 2050 and Lvl.Value <= 2074 then
@@ -2420,52 +2420,52 @@ elseif Three_World and Lvl.Value >= 2575 and Lvl.Value <= 2599 then
     QuestNumber = 2
     QuestPos = CFrame.new(-16666.5703125, 105.2913818359375, 1576.6925048828125)
     EnemyPos = CFrame.new(-16778.7852, 232.283752, 1442.08325, -0.992449045, -5.54140511e-10, -0.12265785, -2.84580609e-10, 1, -2.21517649e-09, 0.12265785, -2.16354379e-09, -0.992449045)
-elseif Three_World and Lvl.Value >= 2600 then
-    local submarineCF = CFrame.new(-16269.4121, 24.7584076, 1371.70752, -0.999348342, -0.00479344372, 0.0357791297, -0.00262145093, 0.998164296, 0.0605080314, -0.036003489, 0.0603748076, -0.997526407)   
-    if Lvl.Value >= 2600 and Lvl.Value <= 2624 then
-        Enemy = "Reef Bandit"
-        NameEnemy = "Reef Bandit"
-        QuestName = "SubmergedQuest1"
-        QuestNumber = 1
-        QuestPos = CFrame.new(10780.739, -2088.410, 9260.411)
-        EnemyPos = CFrame.new(10899.859, -2145.235, 9279.294)
-    elseif Lvl.Value >= 2625 and Lvl.Value <= 2649 then
-        Enemy = "Coral Pirate"
-        NameEnemy = "Coral Pirate"
-        QuestName = "SubmergedQuest1"
-        QuestNumber = 2
-        QuestPos = CFrame.new(10780.739, -2088.410, 9260.411)
-        EnemyPos = CFrame.new(10824.544, -2087.295, 9357.231)
-    elseif Lvl.Value >= 2650 and Lvl.Value <= 2674 then
-        Enemy = "Sea Chanter"
-        NameEnemy = "Sea Chanter"
-        QuestName = "SubmergedQuest2"
-        QuestNumber = 1
-        QuestPos = CFrame.new(10883.599, -2086.885, 10034.020)
-        EnemyPos = CFrame.new(10786.387, -2087.373, 10105.262)
-    elseif Lvl.Value >= 2675 and Lvl.Value <= 2699 then
-        Enemy = "Ocean Prophet"
-        NameEnemy = "Ocean Prophet"
-        QuestName = "SubmergedQuest2"
-        QuestNumber = 2
-        QuestPos = CFrame.new(10883.599, -2086.885, 10034.020)
-        EnemyPos = CFrame.new(11003.326, -2007.026, 10225.063)
-    elseif Lvl.Value >= 2700 and Lvl.Value <= 2724 then
-        Enemy = "High Disciple"
-        NameEnemy = "High Disciple"
-        QuestName = "SubmergedQuest3"
-        QuestNumber = 1
-        QuestPos = CFrame.new(9637.29395, -1993.13159, 9616.30176)
-        EnemyPos = CFrame.new(9835.43555, -1995.08801, 9533.9375)
-    elseif Lvl.Value >= 2725 then
-        Enemy = "Grand Devotee"
-        NameEnemy = "Grand Devotee"
-        QuestName = "SubmergedQuest3"
-        QuestNumber = 2
-        QuestPos = CFrame.new(9637.29395, -1993.13159, 9616.30176)
-        EnemyPos = CFrame.new(9559.19434, -1994.39734, 9798.66504)
-    end
+-- New Submerged enemies for levels 2600-2725
+elseif Three_World and Lvl.Value >= 2600 and Lvl.Value <= 2624 then
+    Enemy = "Reef Bandit"
+    NameEnemy = "Reef Bandit"
+    QuestName = "SubmergedQuest1"
+    QuestNumber = 1
+    QuestPos = CFrame.new(10780.739, -2088.410, 9260.411)
+    EnemyPos = CFrame.new(10899.859, -2145.235, 9279.294)
+elseif Three_World and Lvl.Value >= 2625 and Lvl.Value <= 2649 then
+    Enemy = "Coral Pirate"
+    NameEnemy = "Coral Pirate"
+    QuestName = "SubmergedQuest1"
+    QuestNumber = 2
+    QuestPos = CFrame.new(10780.739, -2088.410, 9260.411)
+    EnemyPos = CFrame.new(10824.544, -2087.295, 9357.231)
+elseif Three_World and Lvl.Value >= 2650 and Lvl.Value <= 2674 then
+    Enemy = "Sea Chanter"
+    NameEnemy = "Sea Chanter"
+    QuestName = "SubmergedQuest2"
+    QuestNumber = 1
+    QuestPos = CFrame.new(10883.599, -2086.885, 10034.020)
+    EnemyPos = CFrame.new(10786.387, -2087.373, 10105.262)
+elseif Three_World and Lvl.Value >= 2675 and Lvl.Value <= 2699 then
+    Enemy = "Ocean Prophet"
+    NameEnemy = "Ocean Prophet"
+    QuestName = "SubmergedQuest2"
+    QuestNumber = 2
+    QuestPos = CFrame.new(10883.599, -2086.885, 10034.020)
+    EnemyPos = CFrame.new(11003.326, -2007.026, 10225.063)
+elseif Three_World and Lvl.Value >= 2700 and Lvl.Value <= 2724 then
+    Enemy = "High Disciple"
+    NameEnemy = "High Disciple"
+    QuestName = "SubmergedQuest3"
+    QuestNumber = 1
+    QuestPos = CFrame.new(9637.29395, -1993.13159, 9616.30176)
+    EnemyPos = CFrame.new(9835.43555, -1995.08801, 9533.9375)
+elseif Three_World and Lvl.Value >= 2725 then
+    Enemy = "Grand Devotee"
+    NameEnemy = "Grand Devotee"
+    QuestName = "SubmergedQuest3"
+    QuestNumber = 2
+    QuestPos = CFrame.new(9637.29395, -1993.13159, 9616.30176)
+    EnemyPos = CFrame.new(9559.19434, -1994.39734, 9798.66504)
 end
+end
+
 local Tween
 function TPZ(p)
     local Distance = (p.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
@@ -3512,106 +3512,137 @@ local function FarmLevel()
             end
         end
     end
-if Three_World and plr.Data.Level.Value >= 2600 then
-    local submarineCF = CFrame.new(-16269.4121, 24.7584076, 1371.70752, -0.999348342, -0.00479344372, 0.0357791297, -0.00262145093, 0.998164296, 0.0605080314, -0.036003489, 0.0603748076, -0.997526407)
-    if CFrameQuest and (CFrameQuest.Position - hrp.Position).Magnitude > 10000 then
-        tp(submarineCF)  -- Changed from topos to tp
-        if (hrp.Position - submarineCF.Position).Magnitude <= 5 then
-            local args = { "TravelToSubmergedIsland" }
-            local rf = game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/SubmarineWorkerSpeak")
-            if rf then
-                rf:InvokeServer(unpack(args))
-            end
-        end
-        return 
-    end
-end
-
-if New_World then
-    if mt.ffc(es, "Core") or mt.ffc(rt, "Core") then
-        if mt.ffc(es, "Core") then
-            for _,v in pairs(es:GetChildren()) do
-                if v.Name == "Core" and v.Humanoid.Health > 0 then
-                    repeat mt.wt()
-                        tp(v.HumanoidRootPart.CFrame * CFrame.new(0, 40, 0),1.5)
-                        if not mt.ffc(lp.Character, "HasBuso") then
-                            rt.Remotes.CommF_:InvokeServer("Buso")
-                        end
-                        Ew()
-                    until not v.Parent or v.Humanoid.Health <= 0 or not getgenv().AutoFarm
+    if New_World then
+        if mt.ffc(es, "Core") or mt.ffc(rt, "Core") then
+            if mt.ffc(es, "Core") then
+                for _,v in pairs(es:GetChildren()) do
+                    if v.Name == "Core" and v.Humanoid.Health > 0 then
+                        repeat mt.wt()
+                            tp(v.HumanoidRootPart.CFrame * CFrame.new(0, 40, 0),1.5)
+                            if not mt.ffc(lp.Character, "HasBuso") then
+                                rt.Remotes.CommF_:InvokeServer("Buso")
+                            end
+                            Ew()
+                        until not v.Parent or v.Humanoid.Health <= 0 or not getgenv().AutoFarm
+                    end
                 end
-            end
-        elseif mt.ffc(rt, "Core") then
-            for _,v in pairs(rt:GetChildren()) do
-                if v.Name == "Core" and v.Humanoid.Health > 0 then
-                    repeat mt.wt()
-                        tp(v.HumanoidRootPart.CFrame * CFrame.new(0, 40, 0),1.5)
-                        if not mt.ffc(lp.Character, "HasBuso") then
-                            rt.Remotes.CommF_:InvokeServer("Buso")
-                        end
-                        Ew()
-                    until not v.Parent or v.Humanoid.Health <= 0 or not getgenv().AutoFarm
+            elseif mt.ffc(rt, "Core") then
+                for _,v in pairs(rt:GetChildren()) do
+                    if v.Name == "Core" and v.Humanoid.Health > 0 then
+                        repeat mt.wt()
+                            tp(v.HumanoidRootPart.CFrame * CFrame.new(0, 40, 0),1.5)
+                            if not mt.ffc(lp.Character, "HasBuso") then
+                                rt.Remotes.CommF_:InvokeServer("Buso")
+                            end
+                            Ew()
+                        until not v.Parent or v.Humanoid.Health <= 0 or not getgenv().AutoFarm
+                    end
                 end
             end
         end
     end
-end
+    DataQuest()
 
-DataQuest()
 if Quest ~= nil then return end
-if Level.Value < 2800 or not Three_World then
-    if Level.Value <= 9 and not New_World and not Three_World then
-        if lp.PlayerGui.Main.Quest.Visible then
-            if mt.sf(lp.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, tostring(NameEnemy)) then
-                if mt.ffc(es, Enemy) then
+    if Level.Value < 2800 or not Three_World then
+        if Level.Value <= 9 and not New_World and not Three_World then
+            if lp.PlayerGui.Main.Quest.Visible then
+                if mt.sf(lp.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, tostring(NameEnemy)) then
+                    if mt.ffc(es, Enemy) then
+                        for i,v in pairs(es:GetChildren()) do
+                            if v.Name == Enemy and mt.ffc(v,"Humanoid") and v.Humanoid.Health > 0 and mt.ffc(v,"HumanoidRootPart") then 
+                                repeat mt.wt()
+                                    mt.BN(v.Name)
+                                    tp(v.HumanoidRootPart.CFrame*CFrame.new(0, 30, 0), 1.5)
+                                    if not mt.ffc(lp.Character, "HasBuso") then
+                                        rt.Remotes.CommF_:InvokeServer("Buso")
+                                    end
+                                    Ew()
+                                until v.Humanoid.Health <= 0 or not es:FindFirstChild(Enemy) or not lp.PlayerGui.Main:FindFirstChild("Quest").Visible or not getgenv().AutoFarm or Quest ~= nil
+                            end
+                        end
+                    else
+                        tp(EnemyPos, 1.5)
+                    end
+                else
+                    rt.Remotes.CommF_:InvokeServer("AbandonQuest")
+                end
+            else
+                repeat mt.wt()
+                    tp(QuestPos, 1.5)
+                    if (QuestPos.Position - lp.Character.HumanoidRootPart.Position).Magnitude <= 5 and lp.Character:WaitForChild("Humanoid").Health > 0 then
+                        mt.wt()
+                        rt:WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer("StartQuest", QuestName, QuestNumber)
+                    end
+                until lp.PlayerGui.Main:FindFirstChild("Quest").Visible or not getgenv().AutoFarm or Quest ~= nil
+            end
+
+        elseif Level.Value >= 9 and Level.Value <= 70 and not New_World and not Three_World then
+            if (CFrame.new(-7895, 5546, -380).Position - lp.Character.HumanoidRootPart.Position).Magnitude <= 1000 then
+                if mt.ffc(es, "Shanda") then
                     for i,v in pairs(es:GetChildren()) do
-                        if v.Name == Enemy and mt.ffc(v,"Humanoid") and v.Humanoid.Health > 0 and mt.ffc(v,"HumanoidRootPart") then 
+                        if v.Name == "Shanda" and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
                             repeat mt.wt()
-                                mt.BN(v.Name)
+                                SROP = true
                                 tp(v.HumanoidRootPart.CFrame*CFrame.new(0, 30, 0), 1.5)
-                                if not mt.ffc(lp.Character, "HasBuso") then
-                                    rt.Remotes.CommF_:InvokeServer("Buso")
-                                end
                                 Ew()
-                            until v.Humanoid.Health <= 0 or not es:FindFirstChild(Enemy) or not lp.PlayerGui.Main:FindFirstChild("Quest").Visible or not getgenv().AutoFarm or Quest ~= nil
+                                mt.BN(v.Name)
+                            until not v.Parent or v.Humanoid.Health <= 0 or Level.Value >= 91 or not getgenv().AutoFarm or Quest ~= nil
                         end
                     end
                 else
-                    tp(EnemyPos, 1.5)
+                    tp(CFrame.new(-7757, 5582, -481), 1.5)
                 end
             else
-                rt.Remotes.CommF_:InvokeServer("AbandonQuest")
+                rt.Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(-7894.6176757813, 5547.1416015625, -380.29119873047))
             end
-        else
-            repeat mt.wt()
-                tp(QuestPos, 1.5)
-                if (QuestPos.Position - lp.Character.HumanoidRootPart.Position).Magnitude <= 5 and lp.Character:WaitForChild("Humanoid").Health > 0 then
-                    mt.wt()
-                    rt:WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer("StartQuest", QuestName, QuestNumber)
-                end
-            until lp.PlayerGui.Main:FindFirstChild("Quest").Visible or not getgenv().AutoFarm or Quest ~= nil
-        end
-
-    elseif Level.Value >= 9 and Level.Value <= 70 and not New_World and not Three_World then
-        if (CFrame.new(-7895, 5546, -380).Position - lp.Character.HumanoidRootPart.Position).Magnitude <= 1000 then
-            if mt.ffc(es, "Shanda") then
-                for i,v in pairs(es:GetChildren()) do
-                    if v.Name == "Shanda" and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
-                        repeat mt.wt()
-                            SROP = true
-                            tp(v.HumanoidRootPart.CFrame*CFrame.new(0, 30, 0), 1.5)
-                            Ew()
-                            mt.BN(v.Name)
-                        until not v.Parent or v.Humanoid.Health <= 0 or Level.Value >= 91 or not getgenv().AutoFarm or Quest ~= nil
+        elseif Level.Value >= 71 then
+            if lp.PlayerGui.Main.Quest.Visible then
+                if mt.sf(lp.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, tostring(NameEnemy)) then
+                    if mt.ffc(es, Enemy) then
+                        for i, v in pairs(es:GetChildren()) do
+                            if v.Name == Enemy and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and v:FindFirstChild("HumanoidRootPart") then
+                                repeat mt.wt()
+                                    SROP = false
+                                    tp(v.HumanoidRootPart.CFrame*CFrame.new(0, 30, 0), 1.5)
+                                    if not mt.ffc(lp.Character, "HasBuso") then
+                                        rt.Remotes.CommF_:InvokeServer("Buso")
+                                    end
+                                    mt.BN(v.Name)
+                                    Ew()
+                                until v.Humanoid.Health <= 0 or not es:FindFirstChild(Enemy) or not lp.PlayerGui.Main:FindFirstChild("Quest").Visible or Quest ~= nil
+                            end
+                        end
+                    else
+                        tp(EnemyPos, 1.5)
                     end
+                else
+                    rt.Remotes.CommF_:InvokeServer("AbandonQuest")
                 end
             else
-                tp(CFrame.new(-7757, 5582, -481), 1.5)
+                repeat mt.wt()
+                    tp(QuestPos, 1.5)
+                    if (QuestPos.Position - lp.Character.HumanoidRootPart.Position).Magnitude <= 5 and lp.Character:WaitForChild("Humanoid").Health > 0 then
+                        mt.wt(0.5)
+                        rt:WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer("StartQuest", QuestName, QuestNumber)
+                    end
+                until lp.PlayerGui.Main:FindFirstChild("Quest").Visible or not getgenv().AutoFarm or Quest ~= nil
             end
-        else
-            rt.Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(-7894.6176757813, 5547.1416015625, -380.29119873047))
         end
-    elseif Level.Value >= 71 then
+    elseif Level.Value >= 2600 and Three_World then
+        if QuestPos and (QuestPos.Position - lp.Character.HumanoidRootPart.Position).Magnitude > 10000 then
+            local submarineCF = CFrame.new(-16269.4121, 24.7584076, 1371.70752, -0.999348342, -0.00479344372, 0.0357791297, -0.00262145093, 0.998164296, 0.0605080314, -0.036003489, 0.0603748076, -0.997526407)
+            tp(submarineCF, 1.5)
+            if (lp.Character.HumanoidRootPart.Position - submarineCF.Position).Magnitude <= 5 then
+                local args = { "TravelToSubmergedIsland" }
+                local rf = game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/SubmarineWorkerSpeak")
+                if rf then
+                    rf:InvokeServer(unpack(args))
+                end
+            end
+            return 
+        end
+        
         if lp.PlayerGui.Main.Quest.Visible then
             if mt.sf(lp.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, tostring(NameEnemy)) then
                 if mt.ffc(es, Enemy) then
@@ -3625,7 +3656,7 @@ if Level.Value < 2800 or not Three_World then
                                 end
                                 mt.BN(v.Name)
                                 Ew()
-                            until v.Humanoid.Health <= 0 or not es:FindFirstChild(Enemy) or not lp.PlayerGui.Main:FindFirstChild("Quest").Visible or Quest ~= nil
+                            until v.Humanoid.Health <= 0 or not es:FindFirstChild(Enemy) or not lp.PlayerGui.Main:FindFirstChild("Quest").Visible or Quest ~= nil or not getgenv().AutoFarm
                         end
                     end
                 else
@@ -3643,43 +3674,44 @@ if Level.Value < 2800 or not Three_World then
                 end
             until lp.PlayerGui.Main:FindFirstChild("Quest").Visible or not getgenv().AutoFarm or Quest ~= nil
         end
-    end
-elseif Level.Value >= 2800 and Three_World then
-    SROP = false
-    if mt.ffc(rt ,"Cake Prince") then
-        for _, v in pairs(rt:GetChildren()) do    
-            if v.Name == 'Cake Prince' and v:FindFirstChild("Humanoid") and v:FindFirstChild("Humanoid").Health > 0 then
-                tp(v.HumanoidRootPart.CFrame*CFrame.new(0,42,10),1.5)
+    elseif Level.Value >= 2800 and Three_World then
+        SROP = false
+        if mt.ffc(rt ,"Cake Prince") then
+            for _, v in pairs(rt:GetChildren()) do    
+                if v.Name == 'Cake Prince' and v:FindFirstChild("Humanoid") and v:FindFirstChild("Humanoid").Health > 0 then
+                    tp(v.HumanoidRootPart.CFrame*CFrame.new(0,42,10),1.5)
+                end
             end
-        end
-    elseif mt.ffc(es ,"Cake Prince") then
-        for _, v in pairs(es:GetChildren()) do    
-            if v.Name == 'Cake Prince' and v:FindFirstChild("Humanoid") and v:FindFirstChild("Humanoid").Health > 0 then
-                tp(v.HumanoidRootPart.CFrame*CFrame.new(0,42,10),1.5)
-            end
-        end
-    else
-        if tostring(string.match(tostring(rt.Remotes.CommF_:InvokeServer("CakePrinceSpawner")), "%d+")) == 'nil' or tostring(string.match(tostring(rt.Remotes.CommF_:InvokeServer("CakePrinceSpawner")), "%d+")) == nil then
-            rt.Remotes.CommF_:InvokeServer("CakePrinceSpawner",true)
-        end
-        if  mt.ffc(es, "Cookie Crafter") or mt.ffc(es, "Cake Guard") or mt.ffc(es, "Baking Staff") or mt.ffc(es, "Head Baker") then
-            for _, v in pairs(es:GetChildren()) do
-                if v.Name == "Cookie Crafter" or v.Name == "Cake Guard" or v.Name == "Baking Staff" or v.Name == "Head Baker" then
-                    repeat mt.wt()
-                        tp(v.HumanoidRootPart.CFrame*CFrame.new(0, 30, 0), 1.5)
-                        if not mt.ffc(lp.Character, "HasBuso") then
-                            rt.Remotes.CommF_:InvokeServer("Buso")
-                        end
-                        mt.BN(v.Name)
-                        Ew()
-                    until v.Humanoid.Health <= 0 or not es:FindFirstChild(Enemy) or not lp.PlayerGui.Main:FindFirstChild("Quest").Visible or Quest ~= nil
-                end 
+        elseif mt.ffc(es ,"Cake Prince") then
+            for _, v in pairs(es:GetChildren()) do    
+                if v.Name == 'Cake Prince' and v:FindFirstChild("Humanoid") and v:FindFirstChild("Humanoid").Health > 0 then
+                    tp(v.HumanoidRootPart.CFrame*CFrame.new(0,42,10),1.5)
+                end
             end
         else
-            tp(CFrame.new(-2091.911865234375, 70.00884246826172, -12142.8359375),1.5)
+            if tostring(string.match(tostring(rt.Remotes.CommF_:InvokeServer("CakePrinceSpawner")), "%d+")) == 'nil' or tostring(string.match(tostring(rt.Remotes.CommF_:InvokeServer("CakePrinceSpawner")), "%d+")) == nil then
+                rt.Remotes.CommF_:InvokeServer("CakePrinceSpawner",true)
+            end
+            if  mt.ffc(es, "Cookie Crafter") or mt.ffc(es, "Cake Guard") or mt.ffc(es, "Baking Staff") or mt.ffc(es, "Head Baker") then
+                for _, v in pairs(es:GetChildren()) do
+                    if v.Name == "Cookie Crafter" or v.Name == "Cake Guard" or v.Name == "Baking Staff" or v.Name == "Head Baker" then
+                        repeat mt.wt()
+                            tp(v.HumanoidRootPart.CFrame*CFrame.new(0, 30, 0), 1.5)
+                            if not mt.ffc(lp.Character, "HasBuso") then
+                                rt.Remotes.CommF_:InvokeServer("Buso")
+                            end
+                            mt.BN(v.Name)
+                            Ew()
+                        until v.Humanoid.Health <= 0 or not es:FindFirstChild(Enemy) or not lp.PlayerGui.Main:FindFirstChild("Quest").Visible or Quest ~= nil
+                    end 
+                end
+            else
+                tp(CFrame.new(-2091.911865234375, 70.00884246826172, -12142.8359375),1.5)
+            end
         end
     end
 end
+
 local function Get()
     if not noFruit then
         for _, fruitTool in pairs(lp.Backpack:GetChildren()) do
@@ -6537,9 +6569,9 @@ task.spawn(function()
                     end
                 until not mt.CheckBoss("Longma")
             elseif Quest == 'Soul Guitar' then
-                --[[
+                
                     if mt.CheckItem('Dark Fragment') >= 1 then
-                ]]
+               
                 if mt.CheckItem('Bones') < 500 then
                     if Three_World then
                         mt.FarmBone(false)
@@ -6641,6 +6673,7 @@ task.spawn(function()
                         end
                     end
                 end
+                
                     else
                         if New_World then
                             
@@ -6648,6 +6681,7 @@ task.spawn(function()
                             rt.Remotes.CommF_:InvokeServer("TravelDressrosa")
                         end
                     end
+                                                          
             elseif Quest == "RGB" then
                 local KillBoss = nil
                 if rt.Remotes.CommF_:InvokeServer("HornedMan","Bet") == nil then
@@ -7432,7 +7466,7 @@ task.spawn(function()
     while task.wait(1) do
         local now = tick()
         if getgenv().LastOnlineStatus == "Online" then
-            getgenv().PlayTime += now - lastTick
+            getgenv().PlayTime  = now - lastTick
             savePlayTime()
         end
         lastTick = now
