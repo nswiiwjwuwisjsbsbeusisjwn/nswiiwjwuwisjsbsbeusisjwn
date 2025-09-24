@@ -72,12 +72,12 @@ local cg = game:GetService("CoreGui")
 local player = game:GetService("Players").LocalPlayer
 local TweenService = game:GetService("TweenService")
 
-if cg:FindFirstChild('Crystal hub') then
-    cg:FindFirstChild('Crystal hub'):Destroy()
+if cg:FindFirstChild('AuzuRa hub') then
+    cg:FindFirstChild('AuzuRa hub'):Destroy()
 end
 
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "Crystal hub"
+ScreenGui.Name = "AuzuRa hub"
 ScreenGui.Parent = cg
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -152,7 +152,7 @@ UIGradient.Color = ColorSequence.new{
 UIGradient.Parent = UIStroke
 
 HeaderText.Font = Enum.Font.GothamBold
-HeaderText.Text = "Crystal hub"
+HeaderText.Text = "AuzuRa hub"
 HeaderText.TextColor3 = Color3.fromRGB(255, 255, 255)
 HeaderText.TextSize = 18
 HeaderText.TextYAlignment = Enum.TextYAlignment.Bottom
@@ -7858,7 +7858,7 @@ local function sendWebhook(info)
     local bloxFruitText = info.BloxFruitInventory
     
     local Embed = {
-        ["title"] = "Crystal Webhook Config",
+        ["title"] = "AuzuRa Webhook Config",
         ["description"] = "",
         ["type"] = "rich",
         ["color"] = tonumber(0x00ff00),
@@ -7927,13 +7927,13 @@ local function sendWebhook(info)
             }
         },
         ["footer"] = {
-            ["text"] = "Crystal hub config webhook",
+            ["text"] = "AuzuRa hub config webhook",
             ["icon_url"] = "https://cdn.discordapp.com/emojis/1234567890123456789.png"
         }
     }
     
     local data = {
-        ["username"] = "Crystal Enhanced Webhook",
+        ["username"] = "AuzuRa Webhook",
         ["avatar_url"] = "https://cdn.discordapp.com/avatars/123456789/avatar.png",
         ["content"] = pingText,
         ["embeds"] = {Embed}
