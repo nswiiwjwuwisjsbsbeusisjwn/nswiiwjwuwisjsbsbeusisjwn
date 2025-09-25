@@ -231,6 +231,7 @@ task.spawn(function()
         shared.BC_2 = true
     end
 end)
+
 local cg = game:GetService("CoreGui")
 local player = game:GetService("Players").LocalPlayer
 local TweenService = game:GetService("TweenService")
@@ -630,26 +631,41 @@ levelText.TextStrokeTransparency = 0
 levelText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 levelText.ZIndex = 1002
 
-local beliFragmentsText = Instance.new("TextLabel")
-beliFragmentsText.Parent = InfoPanel
-beliFragmentsText.Position = UDim2.new(0, 10, 0, 52)
-beliFragmentsText.Size = UDim2.new(1, -20, 0, 22)
-beliFragmentsText.BackgroundTransparency = 1
+local beliText = Instance.new("TextLabel")
+beliText.Parent = InfoPanel
+beliText.Position = UDim2.new(0, 10, 0, 52)
+beliText.Size = UDim2.new(1, -20, 0, 22)
+beliText.BackgroundTransparency = 1
 local beliValue = (player.Data and player.Data.Beli and tostring(player.Data.Beli.Value) or "Loading...")
+beliText.Text = "Beli: <font color='rgb(255,0,127)'>" .. beliValue .. "</font>"
+beliText.RichText = true
+beliText.TextColor3 = Color3.fromRGB(255, 255, 255)
+beliText.TextSize = 16
+beliText.Font = Enum.Font.SourceSansBold
+beliText.TextXAlignment = Enum.TextXAlignment.Left
+beliText.TextStrokeTransparency = 0
+beliText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+beliText.ZIndex = 1002
+
+local fragmentsText = Instance.new("TextLabel")
+fragmentsText.Parent = InfoPanel
+fragmentsText.Position = UDim2.new(0, 10, 0, 74)
+fragmentsText.Size = UDim2.new(1, -20, 0, 22)
+fragmentsText.BackgroundTransparency = 1
 local fragmentsValue = (player.Data and player.Data.Fragments and tostring(player.Data.Fragments.Value) or "0")
-beliFragmentsText.Text = "B: <font color='rgb(255,0,127)'>" .. beliValue .. "</font> | F: <font color='rgb(138,43,226)'>" .. fragmentsValue .. "</font>"
-beliFragmentsText.RichText = true
-beliFragmentsText.TextColor3 = Color3.fromRGB(255, 255, 255)
-beliFragmentsText.TextSize = 16
-beliFragmentsText.Font = Enum.Font.SourceSansBold
-beliFragmentsText.TextXAlignment = Enum.TextXAlignment.Left
-beliFragmentsText.TextStrokeTransparency = 0
-beliFragmentsText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-beliFragmentsText.ZIndex = 1002
+fragmentsText.Text = "Fragments: <font color='rgb(138,43,226)'>" .. fragmentsValue .. "</font>"
+fragmentsText.RichText = true
+fragmentsText.TextColor3 = Color3.fromRGB(255, 255, 255)
+fragmentsText.TextSize = 16
+fragmentsText.Font = Enum.Font.SourceSansBold
+fragmentsText.TextXAlignment = Enum.TextXAlignment.Left
+fragmentsText.TextStrokeTransparency = 0
+fragmentsText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+fragmentsText.ZIndex = 1002
 
 local raceText = Instance.new("TextLabel")
 raceText.Parent = InfoPanel
-raceText.Position = UDim2.new(0, 10, 0, 74)
+raceText.Position = UDim2.new(0, 10, 0, 96)
 raceText.Size = UDim2.new(1, -20, 0, 22)
 raceText.BackgroundTransparency = 1
 raceText.Text = "Race: <font color='rgb(0,191,255)'>" .. (player.Data and player.Data.Race and player.Data.Race.Value or "Loading...") .. "</font>"
@@ -664,7 +680,7 @@ raceText.ZIndex = 1002
 
 local devilFruitText = Instance.new("TextLabel")
 devilFruitText.Parent = InfoPanel
-devilFruitText.Position = UDim2.new(0, 10, 0, 96)
+devilFruitText.Position = UDim2.new(0, 10, 0, 118)
 devilFruitText.Size = UDim2.new(1, -20, 0, 22)
 devilFruitText.BackgroundTransparency = 1
 devilFruitText.Text = "Devil Fruit: <font color='rgb(255,0,127)'>" .. (player.Data and player.Data.DevilFruit and player.Data.DevilFruit.Value or "None") .. "</font>"
@@ -679,7 +695,7 @@ devilFruitText.ZIndex = 1002
 
 local awakenedMovesText = Instance.new("TextLabel")
 awakenedMovesText.Parent = InfoPanel
-awakenedMovesText.Position = UDim2.new(0, 10, 0, 118)
+awakenedMovesText.Position = UDim2.new(0, 10, 0, 140)
 awakenedMovesText.Size = UDim2.new(1, -20, 0, 52)
 awakenedMovesText.BackgroundTransparency = 1
 awakenedMovesText.Text = "Awakened: <font color='rgb(255,100,100)'>None</font>"
@@ -827,7 +843,7 @@ local function updateInventoryDisplay()
     end
     
     if wearContent then
-        wearContent.Text = inv.Wear ~= "" and inv.Wear or "<font size='16' color='rgb(255,100,100)'><b>No cosmetics found</b></font>"
+        wearContent.Text = inv.Wear ~= "" and inv.Wear or "<font size='16' color='rgb(255,100,100)'><b>No Wear found</b></font>"
     end
     
     if fruitContent then
