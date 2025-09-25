@@ -7290,23 +7290,7 @@ spawn(function()
     while wait(0.2) do
         if _G.AutoFarm then
             pcall(function()
-                local plr = game.Players.LocalPlayer
-                local hrp = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
-                if not hrp then return end
-                if World3 and plr.Data.Level.Value >= 2600 then
-                    local submarineCF = CFrame.new(-16269.4121, 24.7584076, 1371.70752, -0.999348342, -0.00479344372, 0.0357791297, -0.00262145093, 0.998164296, 0.0605080314, -0.036003489, 0.0603748076, -0.997526407)
-                    if CFrameQuest and (CFrameQuest.Position - hrp.Position).Magnitude > 10000 then
-                        TP1(submarineCF)
-                        if (hrp.Position - submarineCF.Position).Magnitude <= 5 then
-                            local args = { "TravelToSubmergedIsland" }
-                            local rf = game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/SubmarineWorkerSpeak")
-                            if rf then
-                                rf:InvokeServer(unpack(args))
-                            end
-                        end
-                        return 
-                    end
-                end
+
                 CheckQuest()
                 local QuestTitle = plr.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
                 if not string.find(QuestTitle, NameMon) then
@@ -7575,14 +7559,48 @@ Chest:CreateToggle({
        StopTween(_G.CollectBerry)
     end
 })            
-          spawn(function()
-    while wait() do
+
+-- Remote Berry Collection with Hitbox Expansion
+local Players = game:GetService('Players')
+local RunService = game:GetService('RunService')
+local CollectionService = game:GetService("CollectionService")
+
+_G.BerryHitboxSize = 50 -- Adjustable hitbox size for berries
+_G.RemoteCollectEnabled = true
+
+-- Function to expand berry hitboxes for remote collection
+local function expandBerryHitboxes()
+    if not _G.RemoteCollectEnabled then return end
+    
+    local BerryBushes = CollectionService:GetTagged("BerryBush")
+    
+    for _, Bush in ipairs(BerryBushes) do
+        pcall(function()
+            local BushModel = Bush.Parent
+            
+            -- Find all berry parts in the bush
+            for AttributeName, _ in pairs(Bush:GetAttributes()) do
+                local BerryPart = BushModel:FindFirstChild(AttributeName)
+                if BerryPart and BerryPart:IsA("BasePart") then
+                    -- Expand the berry's hitbox
+                    BerryPart.Size = Vector3.new(_G.BerryHitboxSize, _G.BerryHitboxSize, _G.BerryHitboxSize)
+                    BerryPart.Transparency = 0.8 -- Make it semi-transparent
+                    BerryPart.CanCollide = false
+                end
+            end
+        end)
+    end
+end
+
+-- Modified berry collection function (remote version)
+spawn(function()
+    while wait(0.1) do
         if _G.CollectBerry then
-            local Players = game:GetService("Players")
+            expandBerryHitboxes() -- Expand hitboxes first
+            
             local Player = Players.LocalPlayer
             local Character = Player.Character or Player.CharacterAdded:Wait()
             local Position = Character:GetPivot().Position
-            local CollectionService = game:GetService("CollectionService")
             local BerryBushes = CollectionService:GetTagged("BerryBush")
             local Distance, NearestBush, NearestBerryName = math.huge, nil, nil
 
@@ -7599,24 +7617,16 @@ Chest:CreateToggle({
 
             if NearestBush and NearestBerryName then
                 local BushModel = NearestBush.Parent
-                local BushCenter = BushModel:GetPivot().Position
-
-                -- Bay vào trong bụi cây
-                TP1(CFrame.new(BushCenter + Vector3.new(0, 2, 0)))
-                task.wait(0.5)
-
-                -- Tìm object thật sự là trái berry (theo tên attribute)
                 local BerryPart = BushModel:FindFirstChild(NearestBerryName)
+                
                 if BerryPart and BerryPart:IsA("BasePart") then
-                    -- Bay đến đúng vị trí trái berry
-                    TP1(BerryPart.CFrame + Vector3.new(0, 1, 0)) -- bay hơi trên trái berry một tí
-                    task.wait(0.3)
-
-                    -- Nhấn E để nhặt berry
+                    -- With expanded hitbox, we can collect from further away
+                    -- Just press E without teleporting
                     local VirtualInput = game:GetService("VirtualInputManager")
                     VirtualInput:SendKeyEvent(true, Enum.KeyCode.E, false, game)
                     task.wait(0.1)
                     VirtualInput:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+                    task.wait(0.5) -- Wait before next collection
                 end
             else
                 if _G.CollectBerryHop then
