@@ -231,7 +231,6 @@ task.spawn(function()
         shared.BC_2 = true
     end
 end)
-
 local cg = game:GetService("CoreGui")
 local player = game:GetService("Players").LocalPlayer
 local TweenService = game:GetService("TweenService")
@@ -843,7 +842,7 @@ local function updateInventoryDisplay()
     end
     
     if wearContent then
-        wearContent.Text = inv.Wear ~= "" and inv.Wear or "<font size='16' color='rgb(255,100,100)'><b>No Wear found</b></font>"
+        wearContent.Text = inv.Wear ~= "" and inv.Wear or "<font size='16' color='rgb(255,100,100)'><b>No cosmetics found</b></font>"
     end
     
     if fruitContent then
