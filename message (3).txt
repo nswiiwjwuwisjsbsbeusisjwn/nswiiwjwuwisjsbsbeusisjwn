@@ -231,6 +231,7 @@ task.spawn(function()
         shared.BC_2 = true
     end
 end)
+
 local cg = game:GetService("CoreGui")
 local player = game:GetService("Players").LocalPlayer
 local TweenService = game:GetService("TweenService")
@@ -723,7 +724,7 @@ local function formatFruitName(fruitName)
     formatted = string.gsub(formatted, "(%a)(%a*)", function(first, rest)
         return string.upper(first) .. string.lower(rest)
     end)
-    return "<font size='18' color='rgb(255,215,0)'><b>" .. formatted .. "</b></font>"
+    return "<font size='18' color='rgb(255,255,255)'><b>" .. formatted .. "</b></font>"
 end
 
 local function checkFruitOver1M()
@@ -798,16 +799,16 @@ local function getInventory()
             end
             inventory.Gun = table.concat(strings1, "\n")
         end
-        if v.Type == "Wear" then
-            if type(v.Name) == "table" then
-                for _, name in pairs(v.Name) do
-                    table.insert(strings2, "<font size='16' color='rgb(255,255,255)'><b>" .. name .. "</b></font>")
-                end
-            else
-                table.insert(strings2, "<font size='16' color='rgb(255,255,255)'><b>" .. v.Name .. "</b></font>")
-            end
-            inventory.Wear = table.concat(strings2, "\n")
+if v.Type == "Wear" then
+    if type(v.Name) == "table" then
+        for _, name in pairs(v.Name) do
+            table.insert(strings2, "<font size='16' color='rgb(255,255,255)'><b>" .. name .. "</b></font>")
         end
+    else
+        table.insert(strings2, "<font size='16' color='rgb(255,255,255)'><b>" .. v.Name .. "</b></font>")
+    end
+    inventory.Wear = table.concat(strings2, "\n")
+end
         if v.Type == "Blox Fruit" then
             if type(v.Name) == "table" then
                 for _, name in pairs(v.Name) do
@@ -950,8 +951,10 @@ local function updatePlayerStats()
     end
     
     local beliValue = (player.Data and player.Data.Beli and formatNumber(player.Data.Beli.Value) or "Loading...")
+    beliText.Text = "Beli: <font color='rgb(255,0,127)'>" .. beliValue .. "</font>"
+    
     local fragmentsValue = (player.Data and player.Data.Fragments and formatNumber(player.Data.Fragments.Value) or "0")
-    beliFragmentsText.Text = "Beli: <font color='rgb(255,0,127)'>" .. beliValue .. "</font> | Fragments: <font color='rgb(138,43,226)'>" .. fragmentsValue .. "</font>"
+    fragmentsText.Text = "Fragments: <font color='rgb(138,43,226)'>" .. fragmentsValue .. "</font>"
     
     if player.Data and player.Data.Race then
         raceText.Text = "Race: <font color='rgb(0,191,255)'>" .. CheckRace() .. "</font>"
@@ -1006,7 +1009,8 @@ task.spawn(function()
 end)
 
 task.spawn(function()
-    while task.wait(1) do
+    while true do
+        task.wait(1)
         pcall(function()
             updatePlayerStats()
         end)
