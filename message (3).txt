@@ -234,6 +234,7 @@ end)
 local cg = game:GetService("CoreGui")
 local player = game:GetService("Players").LocalPlayer
 local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 if cg:FindFirstChild('Crystal hub') then
     cg:FindFirstChild('Crystal hub'):Destroy()
@@ -376,7 +377,7 @@ local MainContainer = Instance.new("Frame")
 MainContainer.Name = "MainContainer"
 MainContainer.Parent = ScreenGui
 MainContainer.Position = UDim2.new(0.5, 0, 0.24, 0)
-MainContainer.Size = UDim2.new(0.8, 0, 0, 180)
+MainContainer.Size = UDim2.new(0.9, 0, 0.7, 0)
 MainContainer.AnchorPoint = Vector2.new(0.5, 0)
 MainContainer.BackgroundTransparency = 1
 MainContainer.ZIndex = 999
@@ -384,8 +385,8 @@ MainContainer.ZIndex = 999
 local InfoPanel = Instance.new("Frame")
 InfoPanel.Name = "InfoPanel"
 InfoPanel.Parent = MainContainer
-InfoPanel.Position = UDim2.new(0, 5, 0, 0)
-InfoPanel.Size = UDim2.new(0.485, -5, 1, 0)
+InfoPanel.Position = UDim2.new(0, 0, 0, 0)
+InfoPanel.Size = UDim2.new(0.3, -10, 1, 0)
 InfoPanel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 InfoPanel.BackgroundTransparency = 0.25
 InfoPanel.BorderSizePixel = 0
@@ -408,32 +409,159 @@ InfoGradient.Color = ColorSequence.new{
 }
 InfoGradient.Parent = InfoStroke
 
-local ItemsPanel = Instance.new("Frame")
-ItemsPanel.Name = "ItemsPanel"
-ItemsPanel.Parent = MainContainer
-ItemsPanel.Position = UDim2.new(0.515, 0, 0, 0)
-ItemsPanel.Size = UDim2.new(0.485, -5, 1, 0)
-ItemsPanel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-ItemsPanel.BackgroundTransparency = 0.25
-ItemsPanel.BorderSizePixel = 0
-ItemsPanel.ZIndex = 1000
+local TabContainer = Instance.new("Frame")
+TabContainer.Name = "TabContainer"
+TabContainer.Parent = MainContainer
+TabContainer.Position = UDim2.new(0.3, 5, 0, 0)
+TabContainer.Size = UDim2.new(0.7, -5, 1, 0)
+TabContainer.BackgroundTransparency = 1
+TabContainer.ZIndex = 1000
 
-local ItemsCorner = Instance.new("UICorner")
-ItemsCorner.CornerRadius = UDim.new(0, 8)
-ItemsCorner.Parent = ItemsPanel
+local TabButtonsFrame = Instance.new("Frame")
+TabButtonsFrame.Name = "TabButtonsFrame"
+TabButtonsFrame.Parent = TabContainer
+TabButtonsFrame.Position = UDim2.new(0, 0, 0, 0)
+TabButtonsFrame.Size = UDim2.new(1, 0, 0, 35)
+TabButtonsFrame.BackgroundTransparency = 1
+TabButtonsFrame.ZIndex = 1000
 
-local ItemsStroke = Instance.new("UIStroke")
-ItemsStroke.Color = Color3.fromRGB(255, 255, 255)
-ItemsStroke.Thickness = 1.5
-ItemsStroke.Parent = ItemsPanel
+local TabContentFrame = Instance.new("Frame")
+TabContentFrame.Name = "TabContentFrame"
+TabContentFrame.Parent = TabContainer
+TabContentFrame.Position = UDim2.new(0, 0, 0, 40)
+TabContentFrame.Size = UDim2.new(1, 0, 1, -40)
+TabContentFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TabContentFrame.BackgroundTransparency = 0.25
+TabContentFrame.BorderSizePixel = 0
+TabContentFrame.ZIndex = 1000
 
-local ItemsGradient = Instance.new("UIGradient")
-ItemsGradient.Color = ColorSequence.new{
+local ContentCorner = Instance.new("UICorner")
+ContentCorner.CornerRadius = UDim.new(0, 8)
+ContentCorner.Parent = TabContentFrame
+
+local ContentStroke = Instance.new("UIStroke")
+ContentStroke.Color = Color3.fromRGB(255, 255, 255)
+ContentStroke.Thickness = 1.5
+ContentStroke.Parent = TabContentFrame
+
+local ContentGradient = Instance.new("UIGradient")
+ContentGradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
     ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
     ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
 }
-ItemsGradient.Parent = ItemsStroke
+ContentGradient.Parent = ContentStroke
+
+local tabs = {
+    {name = "Swords"},
+    {name = "Guns"},
+    {name = "Wear"},
+    {name = "Fruits"}
+}
+
+local activeTab = 1
+local tabButtons = {}
+local tabContents = {}
+
+for i, tab in ipairs(tabs) do
+    local tabButton = Instance.new("TextButton")
+    tabButton.Name = tab.name .. "Tab"
+    tabButton.Parent = TabButtonsFrame
+    tabButton.Position = UDim2.new((i-1) * 0.25, 2, 0, 0)
+    tabButton.Size = UDim2.new(0.25, -4, 1, 0)
+    tabButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    tabButton.BackgroundTransparency = i == 1 and 0.2 or 0.6
+    tabButton.BorderSizePixel = 0
+    tabButton.Text = tab.name
+    tabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    tabButton.TextSize = 12
+    tabButton.Font = Enum.Font.SourceSansBold
+    tabButton.ZIndex = 1001
+    
+    local tabCorner = Instance.new("UICorner")
+    tabCorner.CornerRadius = UDim.new(0, 6)
+    tabCorner.Parent = tabButton
+    
+    local tabStroke = Instance.new("UIStroke")
+    tabStroke.Color = Color3.fromRGB(255, 255, 255)
+    tabStroke.Thickness = 1
+    tabStroke.Transparency = i == 1 and 0 or 0.5
+    tabStroke.Parent = tabButton
+    
+    local tabGradient = Instance.new("UIGradient")
+    tabGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
+    }
+    tabGradient.Parent = tabStroke
+    
+    table.insert(tabButtons, tabButton)
+end
+
+for i, tab in ipairs(tabs) do
+    local contentFrame = Instance.new("ScrollingFrame")
+    contentFrame.Name = tab.name .. "Content"
+    contentFrame.Parent = TabContentFrame
+    contentFrame.Position = UDim2.new(0, 0, 0, 0)
+    contentFrame.Size = UDim2.new(1, 0, 1, 0)
+    contentFrame.BackgroundTransparency = 1
+    contentFrame.BorderSizePixel = 0
+    contentFrame.ScrollBarThickness = 4
+    contentFrame.ScrollBarImageColor3 = Color3.fromRGB(138, 43, 226)
+    contentFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+    contentFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    contentFrame.Visible = i == 1
+    contentFrame.ZIndex = 1001
+    
+    local contentText = Instance.new("TextLabel")
+    contentText.Name = "ContentText"
+    contentText.Parent = contentFrame
+    contentText.Position = UDim2.new(0, 10, 0, 10)
+    contentText.Size = UDim2.new(1, -20, 0, 50)
+    contentText.BackgroundTransparency = 1
+    contentText.Text = "Loading " .. tab.name:lower() .. "..."
+    contentText.RichText = true
+    contentText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    contentText.TextSize = 16
+    contentText.Font = Enum.Font.SourceSansBold
+    contentText.TextXAlignment = Enum.TextXAlignment.Left
+    contentText.TextYAlignment = Enum.TextYAlignment.Top
+    contentText.TextWrapped = true
+    contentText.TextStrokeTransparency = 0
+    contentText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    contentText.ZIndex = 1002
+    contentText.AutomaticSize = Enum.AutomaticSize.Y
+    
+    table.insert(tabContents, contentFrame)
+end
+
+local function switchTab(tabIndex)
+    if tabIndex == activeTab then return end
+    
+    for i, button in ipairs(tabButtons) do
+        local stroke = button:FindFirstChild("UIStroke")
+        if i == tabIndex then
+            button.BackgroundTransparency = 0.2
+            if stroke then stroke.Transparency = 0 end
+        else
+            button.BackgroundTransparency = 0.6
+            if stroke then stroke.Transparency = 0.5 end
+        end
+    end
+    
+    for i, content in ipairs(tabContents) do
+        content.Visible = i == tabIndex
+    end
+    
+    activeTab = tabIndex
+end
+
+for i, button in ipairs(tabButtons) do
+    button.Activated:Connect(function()
+        switchTab(i)
+    end)
+end
 
 local discordButton = Instance.new("TextButton")
 discordButton.Parent = ScreenGui
@@ -480,8 +608,8 @@ playerNameText.BackgroundTransparency = 1
 playerNameText.Text = "User: <font color='rgb(138,43,226)'>" .. (player.DisplayName or "Loading...") .. "</font>"
 playerNameText.RichText = true
 playerNameText.TextColor3 = Color3.fromRGB(255, 255, 255)
-playerNameText.TextSize = 12
-playerNameText.Font = Enum.Font.GothamBold
+playerNameText.TextSize = 16
+playerNameText.Font = Enum.Font.SourceSansBold
 playerNameText.TextXAlignment = Enum.TextXAlignment.Left
 playerNameText.TextStrokeTransparency = 0
 playerNameText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
@@ -495,8 +623,8 @@ levelText.BackgroundTransparency = 1
 levelText.Text = "Level: <font color='rgb(255,0,127)'>" .. (player.Data and player.Data.Level and player.Data.Level.Value or "Loading...") .. "</font>"
 levelText.RichText = true
 levelText.TextColor3 = Color3.fromRGB(255, 255, 255)
-levelText.TextSize = 12
-levelText.Font = Enum.Font.GothamBold
+levelText.TextSize = 16
+levelText.Font = Enum.Font.SourceSansBold
 levelText.TextXAlignment = Enum.TextXAlignment.Left
 levelText.TextStrokeTransparency = 0
 levelText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
@@ -512,8 +640,8 @@ local fragmentsValue = (player.Data and player.Data.Fragments and tostring(playe
 beliFragmentsText.Text = "B: <font color='rgb(255,0,127)'>" .. beliValue .. "</font> | F: <font color='rgb(138,43,226)'>" .. fragmentsValue .. "</font>"
 beliFragmentsText.RichText = true
 beliFragmentsText.TextColor3 = Color3.fromRGB(255, 255, 255)
-beliFragmentsText.TextSize = 12
-beliFragmentsText.Font = Enum.Font.GothamBold
+beliFragmentsText.TextSize = 16
+beliFragmentsText.Font = Enum.Font.SourceSansBold
 beliFragmentsText.TextXAlignment = Enum.TextXAlignment.Left
 beliFragmentsText.TextStrokeTransparency = 0
 beliFragmentsText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
@@ -527,8 +655,8 @@ raceText.BackgroundTransparency = 1
 raceText.Text = "Race: <font color='rgb(0,191,255)'>" .. (player.Data and player.Data.Race and player.Data.Race.Value or "Loading...") .. "</font>"
 raceText.RichText = true
 raceText.TextColor3 = Color3.fromRGB(255, 255, 255)
-raceText.TextSize = 12
-raceText.Font = Enum.Font.GothamBold
+raceText.TextSize = 16
+raceText.Font = Enum.Font.SourceSansBold
 raceText.TextXAlignment = Enum.TextXAlignment.Left
 raceText.TextStrokeTransparency = 0
 raceText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
@@ -539,11 +667,11 @@ devilFruitText.Parent = InfoPanel
 devilFruitText.Position = UDim2.new(0, 10, 0, 96)
 devilFruitText.Size = UDim2.new(1, -20, 0, 22)
 devilFruitText.BackgroundTransparency = 1
-devilFruitText.Text = "Devil Fruit: None<font color='rgb(255,0,127)'>" .. (player.Data and player.Data.DevilFruit and player.Data.DevilFruit.Value or "None") .. "</font>"
+devilFruitText.Text = "Devil Fruit: <font color='rgb(255,0,127)'>" .. (player.Data and player.Data.DevilFruit and player.Data.DevilFruit.Value or "None") .. "</font>"
 devilFruitText.RichText = true
 devilFruitText.TextColor3 = Color3.fromRGB(255, 255, 255)
-devilFruitText.TextSize = 12
-devilFruitText.Font = Enum.Font.GothamBold
+devilFruitText.TextSize = 16
+devilFruitText.Font = Enum.Font.SourceSansBold
 devilFruitText.TextXAlignment = Enum.TextXAlignment.Left
 devilFruitText.TextStrokeTransparency = 0
 devilFruitText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
@@ -557,8 +685,8 @@ awakenedMovesText.BackgroundTransparency = 1
 awakenedMovesText.Text = "Awakened: <font color='rgb(255,100,100)'>None</font>"
 awakenedMovesText.RichText = true
 awakenedMovesText.TextColor3 = Color3.fromRGB(255, 255, 255)
-awakenedMovesText.TextSize = 11
-awakenedMovesText.Font = Enum.Font.GothamBold
+awakenedMovesText.TextSize = 15
+awakenedMovesText.Font = Enum.Font.SourceSansBold
 awakenedMovesText.TextXAlignment = Enum.TextXAlignment.Left
 awakenedMovesText.TextYAlignment = Enum.TextYAlignment.Top
 awakenedMovesText.TextWrapped = true
@@ -566,96 +694,150 @@ awakenedMovesText.TextStrokeTransparency = 0
 awakenedMovesText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 awakenedMovesText.ZIndex = 1002
 
--- Items Panel Content
-local soulGuitarText = Instance.new("TextLabel")
-soulGuitarText.Parent = ItemsPanel
-soulGuitarText.Position = UDim2.new(0, 10, 0, 8)
-soulGuitarText.Size = UDim2.new(1, -20, 0, 22)
-soulGuitarText.BackgroundTransparency = 1
-soulGuitarText.Text = "Soon all ....</font>"
-soulGuitarText.RichText = true
-soulGuitarText.TextColor3 = Color3.fromRGB(255, 255, 255)
-soulGuitarText.TextSize = 12
-soulGuitarText.Font = Enum.Font.GothamBold
-soulGuitarText.TextXAlignment = Enum.TextXAlignment.Left
-soulGuitarText.TextStrokeTransparency = 0
-soulGuitarText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-soulGuitarText.ZIndex = 1002
+local inventory = {
+    Sword = "",
+    Gun = "",
+    Wear = "",
+    BloxFruit = "",
+    FruitsOver1M = "",
+    FruitsUnder1M = ""
+}
 
-local tripleKatanaText = Instance.new("TextLabel")
-tripleKatanaText.Parent = ItemsPanel
-tripleKatanaText.Position = UDim2.new(0, 10, 0, 30)
-tripleKatanaText.Size = UDim2.new(1, -20, 0, 22)
-tripleKatanaText.BackgroundTransparency = 1
-tripleKatanaText.Text = "True Triple Katana: <font color='rgb(255,100,100)'>❌</font>"
-tripleKatanaText.RichText = true
-tripleKatanaText.TextColor3 = Color3.fromRGB(255, 255, 255)
-tripleKatanaText.TextSize = 12
-tripleKatanaText.Font = Enum.Font.GothamBold
-tripleKatanaText.TextXAlignment = Enum.TextXAlignment.Left
-tripleKatanaText.TextStrokeTransparency = 0
-tripleKatanaText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-tripleKatanaText.ZIndex = 1002
+local function formatFruitName(fruitName)
+    local formatted = string.gsub(fruitName, "%-", " ")
+    formatted = string.gsub(formatted, "(%a)(%a*)", function(first, rest)
+        return string.upper(first) .. string.lower(rest)
+    end)
+    return "<font size='18' color='rgb(255,215,0)'><b>" .. formatted .. "</b></font>"
+end
 
-local cursedKatanaText = Instance.new("TextLabel")
-cursedKatanaText.Parent = ItemsPanel
-cursedKatanaText.Position = UDim2.new(0, 10, 0, 52)
-cursedKatanaText.Size = UDim2.new(1, -20, 0, 22)
-cursedKatanaText.BackgroundTransparency = 1
-cursedKatanaText.Text = "Cursed Dual Katana: <font color='rgb(255,100,100)'>❌</font>"
-cursedKatanaText.RichText = true
-cursedKatanaText.TextColor3 = Color3.fromRGB(255, 255, 255)
-cursedKatanaText.TextSize = 12
-cursedKatanaText.Font = Enum.Font.GothamBold
-cursedKatanaText.TextXAlignment = Enum.TextXAlignment.Left
-cursedKatanaText.TextStrokeTransparency = 0
-cursedKatanaText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-cursedKatanaText.ZIndex = 1002
+local function checkFruitOver1M()
+    local success, inv = pcall(function()
+        return ReplicatedStorage.Remotes.CommF_:InvokeServer("getInventory")
+    end)
+    
+    if not success or not inv then
+        return "Error loading fruits", "Error loading fruits"
+    end
+    
+    local fruitsOver1M = {}
+    local fruitsUnder1M = {}
+    
+    for _, v in pairs(inv) do
+        if v.Type == "Blox Fruit" then
+            local price = v.Price or v.Value or 0
+            local fruitName = v.Name
+            if type(fruitName) == "table" then
+                fruitName = table.concat(fruitName, ", ")
+            end
+            
+            local formattedName = formatFruitName(fruitName)
+            local priceText = "<font size='14' color='rgb(144,238,144)'> (" .. tostring(price) .. " Beli)</font>"
+            
+            if price >= 1000000 then
+                table.insert(fruitsOver1M, formattedName .. priceText)
+            else
+                table.insert(fruitsUnder1M, formattedName .. priceText)
+            end
+        end
+    end
+    
+    local over1MText = (#fruitsOver1M == 0) and "<font size='16' color='rgb(255,100,100)'><b>No fruits over 1M</b></font>" or table.concat(fruitsOver1M, "\n")
+    local under1MText = (#fruitsUnder1M == 0) and "<font size='16' color='rgb(255,100,100)'><b>No fruits under 1M</b></font>" or table.concat(fruitsUnder1M, "\n")
+    
+    return over1MText, under1MText
+end
 
-local godhumanText = Instance.new("TextLabel")
-godhumanText.Parent = ItemsPanel
-godhumanText.Position = UDim2.new(0, 10, 0, 74)
-godhumanText.Size = UDim2.new(1, -20, 0, 22)
-godhumanText.BackgroundTransparency = 1
-godhumanText.Text = "Godhuman: <font color='rgb(255,100,100)'>❌</font>"
-godhumanText.RichText = true
-godhumanText.TextColor3 = Color3.fromRGB(255, 255, 255)
-godhumanText.TextSize = 12
-godhumanText.Font = Enum.Font.GothamBold
-godhumanText.TextXAlignment = Enum.TextXAlignment.Left
-godhumanText.TextStrokeTransparency = 0
-godhumanText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-godhumanText.ZIndex = 1002
+local function getInventory()
+    local strings = {}
+    local strings1 = {}
+    local strings2 = {}
+    local strings3 = {}
+    
+    local success, inv = pcall(function()
+        return ReplicatedStorage.Remotes.CommF_:InvokeServer("getInventory")
+    end)
+    
+    if not success or not inv then
+        return inventory
+    end
+    
+    for k, v in pairs(inv) do
+        if v.Type == "Sword" then
+            if type(v.Name) == "table" then
+                for _, name in pairs(v.Name) do
+                    table.insert(strings, "<font size='16' color='rgb(255,255,255)'><b>" .. name .. "</b></font>")
+                end
+            else
+                table.insert(strings, "<font size='16' color='rgb(255,255,255)'><b>" .. v.Name .. "</b></font>")
+            end
+            inventory.Sword = table.concat(strings, "\n")
+        end
+        if v.Type == "Gun" then
+            if type(v.Name) == "table" then
+                for _, name in pairs(v.Name) do
+                    table.insert(strings1, "<font size='16' color='rgb(255,255,255)'><b>" .. name .. "</b></font>")
+                end
+            else
+                table.insert(strings1, "<font size='16' color='rgb(255,255,255)'><b>" .. v.Name .. "</b></font>")
+            end
+            inventory.Gun = table.concat(strings1, "\n")
+        end
+        if v.Type == "Wear" then
+            if type(v.Name) == "table" then
+                for _, name in pairs(v.Name) do
+                    table.insert(strings2, "<font size='16' color='rgb(255,255,255)'><b>" .. name .. "</b></font>")
+                end
+            else
+                table.insert(strings2, "<font size='16' color='rgb(255,255,255)'><b>" .. v.Name .. "</b></font>")
+            end
+            inventory.Wear = table.concat(strings2, "\n")
+        end
+        if v.Type == "Blox Fruit" then
+            if type(v.Name) == "table" then
+                for _, name in pairs(v.Name) do
+                    table.insert(strings3, "<font size='16' color='rgb(255,255,255)'><b>" .. name .. "</b></font>")
+                end
+            else
+                table.insert(strings3, "<font size='16' color='rgb(255,255,255)'><b>" .. v.Name .. "</b></font>")
+            end
+            inventory.BloxFruit = table.concat(strings3, "\n")
+        end
+    end
+    
+    inventory.FruitsOver1M, inventory.FruitsUnder1M = checkFruitOver1M()
+    
+    return inventory
+end
 
-local pullLeverText = Instance.new("TextLabel")
-pullLeverText.Parent = ItemsPanel
-pullLeverText.Position = UDim2.new(0, 10, 0, 96)
-pullLeverText.Size = UDim2.new(1, -20, 0, 22)
-pullLeverText.BackgroundTransparency = 1
-pullLeverText.Text = "Pull Lever: <font color='rgb(255,100,100)'>❌</font>"
-pullLeverText.RichText = true
-pullLeverText.TextColor3 = Color3.fromRGB(255, 255, 255)
-pullLeverText.TextSize = 12
-pullLeverText.Font = Enum.Font.GothamBold
-pullLeverText.TextXAlignment = Enum.TextXAlignment.Left
-pullLeverText.TextStrokeTransparency = 0
-pullLeverText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-pullLeverText.ZIndex = 1002
-
-local valkyrieText = Instance.new("TextLabel")
-valkyrieText.Parent = ItemsPanel
-valkyrieText.Position = UDim2.new(0, 10, 0, 118)
-valkyrieText.Size = UDim2.new(1, -20, 0, 22)
-valkyrieText.BackgroundTransparency = 1
-valkyrieText.Text = "Valkyrie Helm: <font color='rgb(255,100,100)'>❌</font>"
-valkyrieText.RichText = true
-valkyrieText.TextColor3 = Color3.fromRGB(255, 255, 255)
-valkyrieText.TextSize = 12
-valkyrieText.Font = Enum.Font.GothamBold
-valkyrieText.TextXAlignment = Enum.TextXAlignment.Left
-valkyrieText.TextStrokeTransparency = 0
-valkyrieText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-valkyrieText.ZIndex = 1002
+local function updateInventoryDisplay()
+    local inv = getInventory()
+    
+    local swordContent = tabContents[1]:FindFirstChild("ContentText")
+    local gunContent = tabContents[2]:FindFirstChild("ContentText")
+    local wearContent = tabContents[3]:FindFirstChild("ContentText")
+    local fruitContent = tabContents[4]:FindFirstChild("ContentText")
+    
+    if swordContent then
+        swordContent.Text = inv.Sword ~= "" and inv.Sword or "<font size='16' color='rgb(255,100,100)'><b>No swords found</b></font>"
+    end
+    
+    if gunContent then
+        gunContent.Text = inv.Gun ~= "" and inv.Gun or "<font size='16' color='rgb(255,100,100)'><b>No guns found</b></font>"
+    end
+    
+    if wearContent then
+        wearContent.Text = inv.Wear ~= "" and inv.Wear or "<font size='16' color='rgb(255,100,100)'><b>No cosmetics found</b></font>"
+    end
+    
+    if fruitContent then
+        local fruitText = "<font size='18' color='rgb(255,215,0)'><b>Fruits Over 1M Beli:</b></font>\n" .. 
+                         (inv.FruitsOver1M or "None") .. 
+                         "\n\n<font size='18' color='rgb(144,238,144)'><b>Fruits Under 1M Beli:</b></font>\n" .. 
+                         (inv.FruitsUnder1M or "None")
+        fruitContent.Text = fruitText
+    end
+end
 
 local function CheckRace()
     local success1, bf = pcall(function()
@@ -802,10 +984,20 @@ BlurEffect.Size = 12.5
 BlurEffect.Enabled = true
 
 task.spawn(function()
+    task.wait(2) 
+    pcall(function()
+        updateInventoryDisplay()
+    end)
+end)
+
+task.spawn(function()
     while task.wait(1) do
-        updatePlayerStats()
+        pcall(function()
+            updatePlayerStats()
+        end)
     end
 end)
+
 
 if pi == 2753915549 then
     Old_World = true
@@ -8133,7 +8325,7 @@ local function sendWebhook(info)
             }
         },
         ["footer"] = {
-            ["text"] = "Crystal hub config webhook",
+            ["text"] = "Crystal hub | Blox Fruits",
             ["icon_url"] = "https://cdn.discordapp.com/emojis/1234567890123456789.png"
         }
     }
