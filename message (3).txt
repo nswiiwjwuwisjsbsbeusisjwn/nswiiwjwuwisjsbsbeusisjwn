@@ -8121,7 +8121,7 @@ local function sendWebhook(info)
                      "Devil Fruit: "..info.Stats.DevilFruit
     
     local informationInfo = "Executor: "..info.Executor.."\n"..
-                           "Join Code:\n"..info.JoinCode.."\n```\n"..
+                           "Join Code:\n"..info.JoinCode.."\n"..
                            "JobID: "..info.JobId.."\n"..
                            "HWID: "..info.HWID
     
