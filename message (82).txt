@@ -6661,28 +6661,6 @@ if _G.cathub_Hub_Series_R then
 			end)
 		end
 	end)
-	-- Sniper Fruit
-	spawn(function()
-		while wait(5) do
-			pcall(function()
-				if _G.Fruit_Main['Main'] ~= nil and not Fruit_Eat then
-					local Check_Sell_Fruit = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("GetFruits")
-					for i,v in next,Check_Sell_Fruit do
-						if v.OnSale and table.find(_G.Fruit_Main['Main'],v.Name) and not Fruit_Eat then
-							game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("PurchaseRawFruit", v.Name)
-							wait(2)
-							if table.find(_G.Fruit_Main['Main'],game.Players.LocalPlayer.Data.DevilFruit.Value) then
-								Fruit_Eat = true
-							end
-						end
-					end
-					wait(150)
-				else
-					wait(2)
-				end			    
-			end)
-		end
-	end)
 	-- Run
 	spawn(function()
 		while wait(.1) do
