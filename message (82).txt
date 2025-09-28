@@ -6661,39 +6661,6 @@ if _G.cathub_Hub_Series_R then
 			end)
 		end
 	end)
-	if table.find(_G.Fruit_Main['Main'],game.Players.LocalPlayer.Data.DevilFruit.Value) then
-		Fruit_Eat = true
-	end
-	-- Check Fruit Main
-	if _G.Fruit_Main['Main'] ~= nil and not Fruit_Eat then
-		local fruit = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryFruits")
-		for i,v in fruit do
-			if table.find(_G.Fruit_Main['Main'],v['Name']) and not Eat_FruitxZ then
-				result = {}
-				local regex = ("([^%s]+)"):format("-")
-				for each in v["Name"]:gmatch(regex) do
-					table.insert(result, each)
-				end
-				Eat_Fruit = result[2] .. " Fruit"
-				game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("LoadFruit",v["Name"])
-			end
-		end
-		if Eat_Fruit ~= nil then
-			wait(.5)
-			if game.Players.LocalPlayer.Backpack:FindFirstChild(Eat_Fruit) or game.Players.LocalPlayer.Character:FindFirstChild(Eat_Fruit) then
-				repeat wait()
-					EquipWeapon(Eat_Fruit)
-				until game.Players.LocalPlayer.Character:FindFirstChild(Eat_Fruit) or not game.Players.LocalPlayer.Backpack:FindFirstChild(Eat_Fruit) and not game.Players.LocalPlayer.Character:FindFirstChild(Eat_Fruit)
-				if game.Players.LocalPlayer.Character:FindFirstChild(Eat_Fruit) then
-					game:GetService("Players").LocalPlayer.Character:FindFirstChild(Eat_Fruit).EatRemote:InvokeServer()
-					game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("GetFruits")
-					wait(3)
-					Eat_FruitxZ = true
-					Fruit_Eat = true
-				end
-			end
-		end
-	end
 	-- Sniper Fruit
 	spawn(function()
 		while wait(5) do
