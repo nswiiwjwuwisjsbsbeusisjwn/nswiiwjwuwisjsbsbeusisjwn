@@ -6667,7 +6667,7 @@ if _G.cathub_Hub_Series_R then
 	-- Check Fruit Main
 	if _G.Fruit_Main['Main'] ~= nil and not Fruit_Eat then
 		local fruit = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryFruits")
-		for i,v in next,fruit do
+		for i,v in fruit do
 			if table.find(_G.Fruit_Main['Main'],v['Name']) and not Eat_FruitxZ then
 				result = {}
 				local regex = ("([^%s]+)"):format("-")
