@@ -44,6 +44,7 @@ getgenv().Configs = {
     };
     ["FPS Booster"] = true;
 };
+
 local ps = game:GetService("Players")
 local lp = ps.LocalPlayer
 local pi = game.PlaceId
